@@ -1,30 +1,28 @@
 {
-	"name": "ttn/tea",
-	"description": "TYPO3 example extension for unit testing and best practices",
+	"name": "oracle/typo3-dam",
+	"description": "Select and import assets from the Oracle Content Management (OCM) Digital Asset Management (DAM) in TYPO3.",
 	"license": "GPL-2.0-or-later",
 	"type": "typo3-cms-extension",
 	"keywords": [
 		"typo3",
-		"example",
-		"extension",
-		"tdd",
-		"phpunit",
-		"unit testing",
-		"best practices"
+		"dam",
+		"integration",
+		"oracle",
+		"ocm"
 	],
 	"authors": [
 		{
-			"name": "Oliver Klee",
-			"email": "typo3-coding@oliverklee.de",
-			"homepage": "https://www.oliverklee.de",
+			"name": "Pixelant.net",
+			"email": "info@pixelant.net",
+			"homepage": "https://www.pixelant.net",
 			"role": "developer"
 		}
 	],
-	"homepage": "https://extensions.typo3.org/extension/tea/",
+	"homepage": "https://extensions.typo3.org/extension/oracle_dam/",
 	"support": {
-		"issues": "https://github.com/TYPO3-Documentation/tea/issues",
-		"source": "https://github.com/TYPO3-Documentation/tea",
-		"docs": "https://docs.typo3.org/p/ttn/tea/main/en-us/"
+		"issues": "https://github.com/pixelant/oracle_dam/issues",
+		"source": "https://github.com/pixelant/oracle_dam",
+		"docs": "https://docs.typo3.org/p/pixelant/oracle_dam/main/en-us/"
 	},
 	"require": {
 		"php": "~7.2.0 || ~7.3.0 || ~7.4.0 || ~8.0 || ~8.1",
@@ -64,12 +62,12 @@
 	"prefer-stable": true,
 	"autoload": {
 		"psr-4": {
-			"TTN\\Tea\\": "Classes/"
+			"Oracle\\Typo3Dam\\": "Classes/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"TTN\\Tea\\Tests\\": "Tests/"
+			"Oracle\\Typo3Dam\\Tests\\": "Tests/"
 		}
 	},
 	"config": {

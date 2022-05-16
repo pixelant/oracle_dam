@@ -1,10 +1,10 @@
 <?php
 
 $EM_CONF['tea'] = [
-    'title' => 'Tea example',
-    'description' => 'Example extension for unit testing and best practices',
-    'version' => '1.1.0',
-    'category' => 'example',
+    'title' => 'Oracle DAM',
+    'description' => 'Select and import assets from the Oracle Content Management (OCM) Digital Asset Management (DAM)',
+    'version' => '1.0.0',
+    'category' => 'module',
     'constraints' => [
         'depends' => [
             'php' => '7.2.0-8.1.99',
@@ -14,17 +14,17 @@ $EM_CONF['tea'] = [
     'state' => 'stable',
     'uploadfolder' => false,
     'createDirs' => '',
-    'author' => 'Oliver Klee',
-    'author_email' => 'typo3-coding@oliverklee.de',
-    'author_company' => 'TYPO3 Trainer Network',
+    'author' => 'Pixelant.net for Oracle',
+    'author_email' => 'info@pixelant.net',
+    'author_company' => 'Pixelant.net for Oracle',
     'autoload' => [
         'psr-4' => [
-            'TTN\\Tea\\' => 'Classes/',
+            'Oracle\\Typo3Dam\\' => 'Classes/',
         ],
     ],
     'autoload-dev' => [
         'psr-4' => [
-            'TTN\\Tea\\Tests\\' => 'Tests/',
+            'Oracle\\Typo3Dam\\Tests\\' => 'Tests/',
         ],
     ],
 ];

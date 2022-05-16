@@ -4,6 +4,6 @@ services:
     autoconfigure: true
     public: false
 
-  TTN\Tea\:
+  Oracle\Typo3Dam\:
     resource: '../Classes/*'
     exclude: '../Classes/Domain/Model/*'

@@ -2,15 +2,15 @@
 
 .. _start:
 
-=======================
-TYPO3 extension ``tea``
-=======================
+==========
+Oracle DAM
+==========
 
 :Extension key:
-   tea
+   oracle_dam
 
 :Package name:
-   ttn/tea
+   oracle/typo3-dam
 
 :Version:
    |release|
@@ -19,7 +19,7 @@ TYPO3 extension ``tea``
    en
 
 :Author:
-   Oliver Klee & Contributors
+   Pixelant.net for Oracle
 
 :License:
    This extension is published under the
@@ -30,9 +30,8 @@ TYPO3 extension ``tea``
 
 ----
 
-This TYPO3 extension, based on Extbase and Fluid, is an example of best
-practices in automated code checks, unit/functional/acceptance testing and
-continuous integration.
+Select and import assets from the Oracle Content Management (OCM) Digital Asset
+Management (DAM) in TYPO3.
 
 ----
 
