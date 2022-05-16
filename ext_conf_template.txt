@@ -1,5 +1,5 @@
-# cat=basic/configure/1; type=string; label=OCE URL: The URL to the Oracle Content and Experience instance, e.g.: https://example-instance.cec.ocp.oraclecloud.com
-oceUrl =
+# cat=basic/configure/1; type=string; label=OCE Domain: The domain of the Oracle Content instance, e.g.: example-instance.cec.ocp.oraclecloud.com
+oceDomain =
 
 # cat=basic/configure/2; type=string; label=Repository ID: A 32-character hexademical string identifying the repository. E.g.: 012345678ABCDEF012345678ABCDEF
 repositoryID =

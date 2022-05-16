@@ -17,7 +17,7 @@ class ExtensionConfigurationManager implements SingletonInterface
     /**
      * @var string
      */
-    protected $oceUrl;
+    protected $oceDomain;
 
     /**
      * @var string
@@ -37,7 +37,7 @@ class ExtensionConfigurationManager implements SingletonInterface
         $this->extensionConfiguration = $extensionConfiguration;
         $configuration = $this->extensionConfiguration->get('oracle_dam');
 
-        $this->oceUrl = getenv('APP_ORACLE_DAM_OCE_URL') ?: (string)$configuration['oceUrl'];
+        $this->oceDomain = getenv('APP_ORACLE_DAM_OCE_DOMAIN') ?: (string)$configuration['oceDomain'];
         $this->repositoryID = getenv('APP_ORACLE_DAM_REPOSITORY_ID') ?: (string)$configuration['repositoryID'];
         $this->channelID = getenv('APP_ORACLE_DAM_CHANNEL_ID') ?: (string)$configuration['channelID'];
     }
@@ -53,9 +53,9 @@ class ExtensionConfigurationManager implements SingletonInterface
     /**
      * @return string
      */
-    public function getOceUrl(): string
+    public function getOceDomain(): string
     {
-        return $this->oceUrl;
+        return $this->oceDomain;
     }
 
     /**
@@ -81,6 +81,6 @@ class ExtensionConfigurationManager implements SingletonInterface
      */
     public function isConfigured(): bool
     {
-        return !empty($this->oceUrl) && !empty($this->repositoryID) && !empty($this->channelID);
+        return !empty($this->oceDomain) && !empty($this->repositoryID) && !empty($this->channelID);
     }
 }

@@ -57,7 +57,7 @@ class SelectorButtonContainer extends InlineControlContainer
     }
 
     protected function renderButton(array $inlineConfiguration)
-    {
+    {var_dump($this->extensionConfigurationManager);
         if (
             $this->extensionConfigurationManager->getDownloadFolder() === null
             || !$this->extensionConfigurationManager->isConfigured()
@@ -126,7 +126,7 @@ class SelectorButtonContainer extends InlineControlContainer
     protected function addJavaScriptConfiguration(): void
     {
         $configuration = [
-            'oceUrl' => $this->extensionConfigurationManager->getOceUrl(),
+            'oceUrl' => $this->extensionConfigurationManager->getOceDomain(),
             'channelId' => $this->extensionConfigurationManager->getChannelID(),
             'repositoryId' => $this->extensionConfigurationManager->getRepositoryID(),
         ];
