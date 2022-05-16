@@ -3,6 +3,26 @@
 	<file source-language="en" datatype="plaintext" original="messages">
 		<header/>
 		<body>
+			<trans-unit id="selector-button-control.label">
+				<source>Use media from Oracle DAM</source>
+			</trans-unit>
+			<trans-unit id="selector-button-control.title">
+				<source>Use media from Oracle DAM</source>
+			</trans-unit>
+
+			<!-- JavaScript -->
+			<trans-unit id="js.modal.error-title">
+				<source>An error occurred!</source>
+			</trans-unit>
+			<trans-unit id="js.modal.request-failed">
+				<source>The request could not be completed due to an error.</source>
+			</trans-unit>
+			<trans-unit id="js.modal.request-failed-error">
+				<source>The request failed due to an error:</source>
+			</trans-unit>
+			<trans-unit id="js.modal.illegal-extension">
+				<source>The file extension "{0}" is not allowed here.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

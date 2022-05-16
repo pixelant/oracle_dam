@@ -1,6 +1,6 @@
 {
 	"name": "oracle/typo3-dam",
-	"description": "Select and import assets from the Oracle Content Management (OCM) Digital Asset Management (DAM) in TYPO3.",
+	"description": "Select and import assets from the Oracle Content Management (OCM) Digital Asset Management (DAM) system in TYPO3.",
 	"license": "GPL-2.0-or-later",
 	"type": "typo3-cms-extension",
 	"keywords": [

@@ -3,19 +3,10 @@
 defined('TYPO3_MODE') or die('Access denied.');
 
 (static function (): void {
-    // This makes the plugin available for front-end rendering.
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-        // extension name, matching the PHP namespaces (but without the vendor)
-        'Tea',
-        // arbitrary, but unique plugin name (not visible in the BE)
-        'Tea',
-        // all actions
-        [
-            'Tea' => 'index, show',
-        ],
-        // non-cacheable actions
-        [
-            'Tea' => '',
-        ]
-    );
+    // Add the button
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1652700576248] = [
+        'nodeName' => 'inline',
+        'priority' => 50,
+        'class' => \Oracle\Typo3Dam\FormEngine\Container\SelectorButtonContainer::class,
+    ];
 })();
