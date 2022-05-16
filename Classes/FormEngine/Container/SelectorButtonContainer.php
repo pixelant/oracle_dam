@@ -57,7 +57,7 @@ class SelectorButtonContainer extends InlineControlContainer
     }
 
     protected function renderButton(array $inlineConfiguration)
-    {var_dump($this->extensionConfigurationManager);
+    {
         if (
             $this->extensionConfigurationManager->getDownloadFolder() === null
             || !$this->extensionConfigurationManager->isConfigured()
@@ -86,8 +86,8 @@ class SelectorButtonContainer extends InlineControlContainer
 
         $this->requireJsModules[] = 'TYPO3/CMS/Oracle/Typo3Dam';
 
-        $buttonLabel = htmlspecialchars(LocalizationUtility::translate('selector-button-control.label', 'oracle_ocm'));
-        $titleText = htmlspecialchars(LocalizationUtility::translate('selector-button-control.title', 'oracle_ocm'));
+        $buttonLabel = htmlspecialchars(LocalizationUtility::translate('selector-button-control.label', 'oracle_dam'));
+        $titleText = htmlspecialchars(LocalizationUtility::translate('selector-button-control.title', 'oracle_dam'));
 
         $button = '
             <button type="button" class="btn btn-default t3js-oracleDam-selector-btn"
@@ -134,7 +134,7 @@ class SelectorButtonContainer extends InlineControlContainer
         /** @var PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 
-        $pageRenderer->addInlineSettingArray('oracle_ocm', $configuration);
+        $pageRenderer->addInlineSettingArray('oracle_dam', $configuration);
     }
 
     /**
@@ -145,7 +145,7 @@ class SelectorButtonContainer extends InlineControlContainer
      */
     protected function translate(string $key): ?string
     {
-        return LocalizationUtility::translate($key, 'oracle_ocm');
+        return LocalizationUtility::translate($key, 'oracle_dam');
     }
 
     /**
