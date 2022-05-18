@@ -15,7 +15,7 @@ define([
 ) {
   'use strict';
 
-  var SelectorPlugin = function () {
+  var SelectorPlugin = function (element) {
     var self = this;
 
     self.openModal = function () {
