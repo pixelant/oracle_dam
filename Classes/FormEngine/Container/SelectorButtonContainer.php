@@ -67,6 +67,7 @@ class SelectorButtonContainer extends InlineControlContainer
 
         $this->addJavaScriptConfiguration();
         $this->addJavaScriptLocalization();
+        $this->addInlineCss();
 
         $appearanceConfiguration = $inlineConfiguration['selectorOrUniqueConfiguration']['config']['appearance'];
 
@@ -84,7 +85,7 @@ class SelectorButtonContainer extends InlineControlContainer
         );
         $objectPrefix = $currentStructureDomObjectIdPrefix . '-' . $inlineConfiguration['foreign_table'];
 
-        $this->requireJsModules[] = 'TYPO3/CMS/Oracle/Typo3Dam';
+        $this->requireJsModules[] = 'TYPO3/CMS/OracleDam/SelectorLoader';
 
         $buttonLabel = htmlspecialchars(LocalizationUtility::translate('selector-button-control.label', 'oracle_dam'));
         $titleText = htmlspecialchars(LocalizationUtility::translate('selector-button-control.title', 'oracle_dam'));
@@ -126,9 +127,10 @@ class SelectorButtonContainer extends InlineControlContainer
     protected function addJavaScriptConfiguration(): void
     {
         $configuration = [
-            'oceUrl' => $this->extensionConfigurationManager->getOceDomain(),
+            'oceDomain' => $this->extensionConfigurationManager->getOceDomain(),
             'channelId' => $this->extensionConfigurationManager->getChannelID(),
             'repositoryId' => $this->extensionConfigurationManager->getRepositoryID(),
+            'jsUiUrl' => $this->extensionConfigurationManager->getJavaScriptUiUrl(),
         ];
 
         /** @var PageRenderer $pageRenderer */
@@ -179,5 +181,18 @@ class SelectorButtonContainer extends InlineControlContainer
         }
 
         return '';
+    }
+
+    /**
+     * Add inline styles to make sure the selector is always full size.
+     */
+    private function addInlineCss(): void
+    {
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+
+        $pageRenderer->addCssInlineBlock(
+            'oracle-dam-iframe',
+            '.oce-frame { height: 100%; width: 100% }'
+        );
     }
 }

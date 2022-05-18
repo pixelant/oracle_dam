@@ -9,6 +9,8 @@ use TYPO3\CMS\Core\SingletonInterface;
 
 class ExtensionConfigurationManager implements SingletonInterface
 {
+    protected const JAVASCRIPT_UI_URL = 'https://static.ocecdn.oraclecloud.com/cdn/cec/api/oracle-ce-ui-2.11.js';
+
     /**
      * @var ExtensionConfiguration
      */
@@ -30,6 +32,11 @@ class ExtensionConfigurationManager implements SingletonInterface
     protected $channelID;
 
     /**
+     * @var string
+     */
+    protected $javaScriptUiUrl;
+
+    /**
      * @param ExtensionConfiguration $extensionConfiguration
      */
     public function __construct(ExtensionConfiguration $extensionConfiguration)
@@ -40,6 +47,9 @@ class ExtensionConfigurationManager implements SingletonInterface
         $this->oceDomain = getenv('APP_ORACLE_DAM_OCE_DOMAIN') ?: (string)$configuration['oceDomain'];
         $this->repositoryID = getenv('APP_ORACLE_DAM_REPOSITORY_ID') ?: (string)$configuration['repositoryID'];
         $this->channelID = getenv('APP_ORACLE_DAM_CHANNEL_ID') ?: (string)$configuration['channelID'];
+        $this->javaScriptUiUrl = getenv('APP_ORACLE_DAM_JS_UI_URL')
+            ?: (string)$configuration['jsUiUrl']
+            ?: self::JAVASCRIPT_UI_URL;
     }
 
     /**
@@ -72,6 +82,14 @@ class ExtensionConfigurationManager implements SingletonInterface
     public function getChannelID(): string
     {
         return $this->channelID;
+    }
+
+    /**
+     * @return string
+     */
+    public function getJavaScriptUiUrl(): string
+    {
+        return $this->javaScriptUiUrl;
     }
 
     /**
