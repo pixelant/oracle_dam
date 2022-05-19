@@ -4,15 +4,8 @@ define([
   'TYPO3/CMS/Backend/Severity',
   'TYPO3/CMS/Backend/Utility/MessageUtility',
   'TYPO3/CMS/Core/Ajax/AjaxRequest',
-  'TYPO3/CMS/Core/DocumentService'
-], function(
-  NProgress,
-  Modal,
-  Severity,
-  MessageUtility,
-  AjaxRequest,
-  DocumentService
-) {
+  'TYPO3/CMS/Core/DocumentService',
+], function (NProgress, Modal, Severity, MessageUtility, AjaxRequest, DocumentService) {
   'use strict';
 
   var SelectorPlugin = function (element) {
@@ -25,53 +18,38 @@ define([
         content: '',
         severity: Severity.default,
         size: Modal.sizes.full,
-        callback: function(modal) {
-          require(
-            [TYPO3.settings.oracle_dam.jsUiUrl],
-            function () {
-              OracleCEUI.oceUrl = 'https://' + TYPO3.settings.oracle_dam.oceDomain;
+        callback: function (modal) {
+          require([TYPO3.settings.oracle_dam.jsUiUrl], function () {
+            OracleCEUI.oceUrl = 'https://' + TYPO3.settings.oracle_dam.oceDomain;
 
-              var frame = OracleCEUI.assetsView.createFrame({
-                'assetsView': {
-                  'select': 'single',
-                  'filter': {
-                    'bar': {
-                      'capsules': false,
-                      'relatedKeywords': true
-                    },
-                    'repositories': [
-                      'none'
-                    ],
-                    'channels': [
-                      TYPO3.settings.oracle_dam.channelId
-                    ],
-                    'mediaGroups': [
-                      'images'
-                    ],
-                    'assetStatus': [
-                      'published'
-                    ]
+            var frame = OracleCEUI.assetsView.createFrame({
+              assetsView: {
+                select: 'single',
+                filter: {
+                  bar: {
+                    capsules: false,
+                    relatedKeywords: true,
                   },
-                  'filterValue': {
-                    'repositoryId': TYPO3.settings.oracle_dam.repositoryId,
-                    'channelId': TYPO3.settings.oracle_dam.channelId,
-                    'mediaGroups': [
-                      'images'
-                    ],
-                    'assetStatus': [
-                      'published'
-                    ]
-                  }
-                }
-              });
+                  repositories: ['none'],
+                  channels: [TYPO3.settings.oracle_dam.channelId],
+                  mediaGroups: ['images'],
+                  assetStatus: ['published'],
+                },
+                filterValue: {
+                  repositoryId: TYPO3.settings.oracle_dam.repositoryId,
+                  channelId: TYPO3.settings.oracle_dam.channelId,
+                  mediaGroups: ['images'],
+                  assetStatus: ['published'],
+                },
+              },
+            });
 
-              $('.modal-body', modal).append(frame);
-            }
-          );
-        }
+            $('.modal-body', modal).append(frame);
+          });
+        },
       });
-    }
-  }
+    };
+  };
 
   DocumentService.ready().then(function () {
     document.addEventListener(
