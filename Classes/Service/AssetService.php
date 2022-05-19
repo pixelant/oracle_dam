@@ -139,7 +139,7 @@ class AssetService implements SingletonInterface
      * Returns the Oracle asset ID for the sys_file UID supplied in $fileId.
      *
      * @param int $fileId
-     * @return int The Oracle asset ID. Zero if not found or file is not QBank media.
+     * @return int The Oracle asset ID. Zero if not found or file is not an Oracle DAM asset.
      */
     protected function getAssetIdentifierForFile(int $fileId): int
     {
