@@ -2,21 +2,32 @@
 
 declare(strict_types=1);
 
-
 namespace Oracle\Typo3Dam\Controller;
 
-
+use Oracle\Typo3Dam\Service\AssetService;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class SelectorController
 {
+    /**
+     * @var AssetService
+     */
+    protected $assetService;
+
+    /**
+     * @param AssetService $assetService
+     */
+    public function __construct(AssetService $assetService)
+    {
+        $this->assetService = $assetService;
+    }
+
     public function downloadFileAction(ServerRequestInterface $request): JsonResponse
     {
         return $this->getSuccessResponse([]);
     }
-
 
     /**
      * Returns an error response object with message set.

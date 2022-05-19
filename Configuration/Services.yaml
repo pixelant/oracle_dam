@@ -7,3 +7,6 @@ services:
   Oracle\Typo3Dam\:
     resource: '../Classes/*'
     exclude: '../Classes/Domain/Model/*'
+
+  Oracle\Typo3Dam\Controller\SelectorController:
+    public: true
