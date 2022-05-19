@@ -10,5 +10,6 @@
 /build
 /clover.xml
 /composer.lock
+/package-lock.json
 /nbproject
 /var
