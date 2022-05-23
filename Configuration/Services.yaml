@@ -10,3 +10,9 @@ services:
 
   Oracle\Typo3Dam\Controller\SelectorController:
     public: true
+
+  Oracle\Typo3Dam\Command\DownloadAssetCommand:
+    tags:
+      - name: 'console.command'
+        command: 'oracledam:download'
+        description: 'Download asset(s) from Oracle DAM.'

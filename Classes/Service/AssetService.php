@@ -63,7 +63,7 @@ class AssetService implements SingletonInterface
      */
     public function createLocalAssetCopy(int $id): ?File
     {
-
+        return null;
     }
 
     /**
