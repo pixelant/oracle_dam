@@ -51,7 +51,7 @@ define([
             const frame = window.top.OracleCEUI.assetsView.createFrame(
               {
                 assetsView: {
-                  select: 'single',
+                  select: 'multiple',
                   filter: {
                     bar: {
                       capsules: false,
@@ -111,6 +111,10 @@ define([
       const assetIds = [];
 
       for (let asset of assets) {
+        if (!self.validateAsset(asset)) {
+          return;
+        }
+
         assetIds.push(asset.id);
       }
 
@@ -152,6 +156,21 @@ define([
         }
       );
     };
+
+    /**
+     * Returns true if the asset can be inserted.
+     *
+     * @param asset from Oracle
+     * @returns {boolean}
+     */
+    self.validateAsset = function (asset) {
+      if (self.allowedExtensions.indexOf(asset.fileExtension) === -1) {
+        self.displayError(TYPO3.lang['oracle_dam.modal.illegal-extension'].replace('{0}', asset.fileExtension));
+        return false;
+      }
+
+      return true;
+    }
 
     /**
      * Displays an error message in a modal.
