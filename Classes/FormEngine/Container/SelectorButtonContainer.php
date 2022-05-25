@@ -116,6 +116,8 @@ class SelectorButtonContainer extends InlineControlContainer
             'oracle_dam.modal.request-failed' => $this->translate('js.modal.request-failed'),
             'oracle_dam.modal.request-failed-error' => $this->translate('js.modal.request-failed-error'),
             'oracle_dam.modal.illegal-extension' => $this->translate('js.modal.illegal-extension'),
+            'oracle_dam.modal.button.use-selected' => $this->translate('js.modal.button.use-selected'),
+            'oracle_dam.modal.button.cancel' => $this->translate('js.modal.button.cancel'),
         ]);
     }
 

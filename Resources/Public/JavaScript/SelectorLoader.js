@@ -25,7 +25,7 @@ define([
         size: Modal.sizes.full,
         buttons: [
           {
-            text: 'Cancel',
+            text: TYPO3.lang['oracle_dam.modal.button.cancel'],
             active: false,
             trigger: function () {
               self.selectedAssets = [];
@@ -34,7 +34,7 @@ define([
             btnClass: 'btn-default'
           },
           {
-            text: 'Use Selected',
+            text: TYPO3.lang['oracle_dam.modal.button.use-selected'],
             active: false,
             trigger: function () {
               self.$modal.modal('hide');
