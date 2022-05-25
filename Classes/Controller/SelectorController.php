@@ -24,9 +24,18 @@ class SelectorController
         $this->assetService = $assetService;
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     * @return JsonResponse
+     */
     public function downloadFileAction(ServerRequestInterface $request): JsonResponse
     {
-        return $this->getSuccessResponse([]);
+        $assetIds = GeneralUtility::trimExplode(',', $request->getParsedBody()['assets'], true);
+
+        return $this->getSuccessResponse([
+            'fileUids' => [5], // Insert correct ID here.
+            'assetIds' => $assetIds, // Can be removed.
+        ]);
     }
 
     /**
