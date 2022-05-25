@@ -11,9 +11,8 @@ define([
   const SelectorPlugin = function (element) {
     const self = this;
 
-    self.$button = $(element);
-    self.irreObjectId = self.$button.data('fileIrreObject');
-    self.allowedExtensions = self.$button.data('fileAllowed').split(',');
+    self.irreObjectId = element.dataset.fileIrreObject;
+    self.allowedExtensions = element.dataset.fileAllowed.split(',');
 
     self.selectedAssets = [];
 
@@ -76,7 +75,7 @@ define([
                   self.selectedAssets = selection;
 
                   var $successButton = $('.modal-footer .btn-success', self.$modal).first();
-                  console.log($successButton, selection);
+
                   if (selection.length === 0) {
                     $successButton.attr('disabled', true);
 
@@ -135,12 +134,12 @@ define([
             return;
           }
 
-          for (let fileUid in data.fileUids) {
-            MessageUtility.send({
+          for (let i = 0; i < data.fileUids.length; i++) {
+            MessageUtility.MessageUtility.send({
               actionName: 'typo3:foreignRelation:insert',
               objectGroup: self.irreObjectId,
               table: 'sys_file',
-              uid: fileUid
+              uid: data.fileUids[i]
             });
           }
 
