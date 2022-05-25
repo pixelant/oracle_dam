@@ -19,10 +19,10 @@ define([
         severity: Severity.default,
         size: Modal.sizes.full,
         callback: function (modal) {
-          require([TYPO3.settings.oracle_dam.jsUiUrl], function () {
-            OracleCEUI.oceUrl = 'https://' + TYPO3.settings.oracle_dam.oceDomain;
+          window.top.require([TYPO3.settings.oracle_dam.jsUiUrl], function () {
+            window.top.OracleCEUI.oceUrl = 'https://' + TYPO3.settings.oracle_dam.oceDomain;
 
-            var frame = OracleCEUI.assetsView.createFrame({
+            var frame = window.top.OracleCEUI.assetsView.createFrame({
               assetsView: {
                 select: 'single',
                 filter: {
@@ -31,7 +31,7 @@ define([
                     relatedKeywords: true,
                   },
                   repositories: ['none'],
-                  channels: [TYPO3.settings.oracle_dam.channelId],
+                  channels: [],
                   mediaGroups: ['images'],
                   assetStatus: ['published'],
                 },
@@ -44,7 +44,17 @@ define([
               },
             });
 
-            $('.modal-body', modal).append(frame);
+            var $modalBody = $('.modal-body', modal);
+
+            $(frame)
+              .css('height', '100%')
+              .css('width', '100%');
+
+            $modalBody
+              .empty()
+              .css('padding', '0')
+              .get(0)
+              .appendChild(frame);
           });
         },
       });
@@ -67,6 +77,6 @@ define([
     );
 
     // Preload dependency.
-    require([TYPO3.settings.oracle_dam.jsUiUrl]);
+    window.top.require([TYPO3.settings.oracle_dam.jsUiUrl]);
   });
 });

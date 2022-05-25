@@ -67,7 +67,6 @@ class SelectorButtonContainer extends InlineControlContainer
 
         $this->addJavaScriptConfiguration();
         $this->addJavaScriptLocalization();
-        $this->addInlineCss();
 
         $appearanceConfiguration = $inlineConfiguration['selectorOrUniqueConfiguration']['config']['appearance'];
 
@@ -181,18 +180,5 @@ class SelectorButtonContainer extends InlineControlContainer
         }
 
         return '';
-    }
-
-    /**
-     * Add inline styles to make sure the selector is always full size.
-     */
-    private function addInlineCss(): void
-    {
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-
-        $pageRenderer->addCssInlineBlock(
-            'oracle-dam-iframe',
-            '.oce-frame { height: 100%; width: 100% }'
-        );
     }
 }
