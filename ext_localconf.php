@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die('Access denied.');
+defined('TYPO3_MODE') || die('Access denied.');
 
 (static function (): void {
     // Add the button
@@ -10,6 +10,7 @@ defined('TYPO3_MODE') or die('Access denied.');
         'class' => \Oracle\Typo3Dam\FormEngine\Container\SelectorButtonContainer::class,
     ];
 
+    // Only legacy TYPO3 v10 APIs after this point.
     if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 11000000) {
         return;
     }
@@ -22,5 +23,11 @@ defined('TYPO3_MODE') or die('Access denied.');
         'tx-oracle-logo',
         \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
         ['source' => 'EXT:oracle_dam/Resources/Public/Icons/Oracle.svg']
+    );
+
+    $iconRegistry->registerIcon(
+        'tx-oracle-module',
+        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        ['source' => 'EXT:oracle_dam/Resources/Public/Icons/Module.svg']
     );
 })();
