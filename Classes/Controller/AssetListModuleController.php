@@ -8,13 +8,16 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class AssetListModuleController
 {
     protected const ALLOWED_ACTIONS = [
-        'index',
+        'list',
     ];
 
     /**
@@ -34,7 +37,7 @@ class AssetListModuleController
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $action = (string)($request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'index');
+        $action = (string)($request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'list');
 
         if (!in_array($action, self::ALLOWED_ACTIONS)) {
             return new HtmlResponse('Action not allowed', 400);
@@ -52,14 +55,16 @@ class AssetListModuleController
             return $result;
         }
 
+        $this->getLanguageService()->includeLLFile('EXT:oracle_dam/Resources/Private/Language/Modules/asset_list.xlf');
+
         $this->moduleTemplate->setContent($this->view->render());
 
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
-    public function indexAction(): void
+    public function listAction(): void
     {
-        $this->setDocHeader('index');
+        $this->setDocHeader('list');
 
         $this->view->assignMultiple(
             [
@@ -70,5 +75,13 @@ class AssetListModuleController
 
     private function setDocHeader(string $active)
     {
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

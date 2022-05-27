@@ -29,6 +29,23 @@
 			<trans-unit id="js.modal.button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
+
+			<!-- AssetList Module -->
+			<trans-unit id="module.list.title">
+				<source>Downloaded assets from Oracle DAM</source>
+			</trans-unit>
+			<trans-unit id="module.list.description">
+				<source>This list shows all assets from Oracle DAM that have been downloaded to this TYPO3 instance.</source>
+			</trans-unit>
+			<trans-unit id="module.list.filename">
+				<source>Filename</source>
+			</trans-unit>
+			<trans-unit id="module.list.file_updated">
+				<source>File updated</source>
+			</trans-unit>
+			<trans-unit id="module.list.metadata_updated">
+				<source>Metadata updated</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
