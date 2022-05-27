@@ -23,6 +23,12 @@
 			<trans-unit id="js.modal.illegal-extension">
 				<source>The file extension "{0}" is not allowed here.</source>
 			</trans-unit>
+			<trans-unit id="js.modal.button.use-selected">
+				<source>Use Selected</source>
+			</trans-unit>
+			<trans-unit id="js.modal.button.cancel">
+				<source>Cancel</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
