@@ -57,11 +57,11 @@ class AssetService implements SingletonInterface
     /**
      * Downloads an asset file if it doesn't already exist. Returns the local File object.
      *
-     * @param int $id
+     * @param string $id
      * @return File The local file representation
      * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
      */
-    public function createLocalAssetCopy(int $id): ?File
+    public function createLocalAssetCopy(string $id): ?File
     {
         return null;
     }
@@ -69,11 +69,11 @@ class AssetService implements SingletonInterface
     /**
      * Returns a File object equivalent of an asset. Or null if it doesn't exist.
      *
-     * @param int $id
+     * @param string $id
      * @return File|null
      * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
      */
-    protected function findLocalAssetCopy(int $id): ?File
+    protected function findLocalAssetCopy(string $id): ?File
     {
 
     }
@@ -94,13 +94,13 @@ class AssetService implements SingletonInterface
      * @param int $fileUid The local file UID
      * @param bool $changedFile True if file has been changed
      * @param bool $changedMetadata True if metadata has been changed
-     * @param int $assetId
+     * @param string|null $assetId
      */
     protected function updateFileRecord(
         int $fileUid,
         bool $changedFile,
         bool $changedMetadata,
-        int $assetId = 0
+        ?string $assetId = null
     ): void {
 
     }
@@ -132,16 +132,16 @@ class AssetService implements SingletonInterface
      */
     protected function isOracleDamFile(int $fileId): bool
     {
-        return (bool)$this->getAssetIdentifierForFile($fileId);
+        return $this->getAssetIdentifierForFile($fileId) !== null;
     }
 
     /**
      * Returns the Oracle asset ID for the sys_file UID supplied in $fileId.
      *
      * @param int $fileId
-     * @return int The Oracle asset ID. Zero if not found or file is not an Oracle DAM asset.
+     * @return string|null The Oracle asset ID. Zero if not found or file is not an Oracle DAM asset.
      */
-    protected function getAssetIdentifierForFile(int $fileId): int
+    protected function getAssetIdentifierForFile(int $fileId): ?string
     {
 
     }
