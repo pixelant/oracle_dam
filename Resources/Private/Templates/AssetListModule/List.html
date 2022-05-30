@@ -34,6 +34,48 @@
                                 {file.name}
                             </be:link.editRecord>
                         </td>
+                        <td>
+                            <f:format.date format="{dateFormat} {timeFormat}}">{file.tx_oracledam_file_timestamp}</f:format.date>
+                        </td>
+                        <td>
+                            <f:format.date format="{dateFormat} {timeFormat}}">{file.tx_oracledam_metadata_timestamp}</f:format.date>
+                        </td>
+                        <td>
+                            <be:link.editRecord
+                                returnUrl="{returnUrl}"
+                                table="sys_file_metadata"
+                                uid="{file.metadata_uid}"
+                                class="btn btn-default"
+                                title="{f:translate(key: 'module.action.edit', extensionName: 'qbank_dam')}"
+                            >
+                                <core:icon identifier="actions-open" />
+                            </be:link.editRecord>
+
+                            <a class="btn btn-default"
+                               href="#"
+                               data-filelist-show-item-type="_FILE"
+                               data-filelist-show-item-identifier="{file.storage}:{file.identifier}"
+                               title="{f:translate(key: 'module.action.references', extensionName: 'qbank_dam')}">
+                                <core:icon identifier="actions-document-info" />
+                            </a>
+
+                            <f:be.link
+                                route="file_oracleDamAssetList"
+                                parameters="{action: 'updateFile', file: qbankFile.uid}"
+                                title="{f:translate(key: 'module.action.update', extensionName: 'qbank_dam')}"
+                                class="btn btn-success">
+                                <core:icon identifier="actions-database-reload" /> {f:translate(key: 'module.action.update')}
+                            </f:be.link>
+
+                            <f:link.external
+                                class="btn btn-default"
+                                uri="https://{oceDomain}/documents/assets/view/{file.tx_oracledam_id}"
+                                title="{f:translate(key: 'module.action.viewInOracle', extensionName: 'qbank_dam')}"
+                                target="_blank"
+                                >
+                                <core:icon identifier="tx-oracle-logo" />
+                            </f:link.external>
+                        </td>
                     </tr>
                 </f:for>
             </tbody>

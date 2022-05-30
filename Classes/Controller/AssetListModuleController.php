@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Oracle\Typo3Dam\Controller;
 
+use Oracle\Typo3Dam\Configuration\ExtensionConfigurationManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class AssetListModuleController
@@ -26,13 +25,19 @@ class AssetListModuleController
     protected $moduleTemplate;
 
     /**
+     * @var ExtensionConfigurationManager
+     */
+    protected $configurationManager;
+
+    /**
      * @var StandaloneView
      */
     protected $view;
 
-    public function __construct(ModuleTemplate $moduleTemplate = null)
+    public function __construct(ModuleTemplate $moduleTemplate = null, ExtensionConfigurationManager $configurationManager = null)
     {
         $this->moduleTemplate = $moduleTemplate ?? GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->configurationManager = $configurationManager ?? GeneralUtility::makeInstance(ExtensionConfigurationManager::class);
     }
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -62,15 +67,31 @@ class AssetListModuleController
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
-    public function listAction(): void
+    /**
+     * @param ServerRequestInterface $request
+     * @return void
+     */
+    public function listAction(ServerRequestInterface $request): void
     {
         $this->setDocHeader('list');
 
         $this->view->assignMultiple(
             [
-                'some-variable' => 'some-value',
+                'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
+                'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
+                'oceDomain' => $this->configurationManager->getOceDomain()
             ]
         );
+    }
+
+    /**
+     * @return void
+     */
+    public function updateFileAction(ServerRequestInterface $request)
+    {
+
+
+        $this->listAction();
     }
 
     private function setDocHeader(string $active)

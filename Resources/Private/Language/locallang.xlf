@@ -46,6 +46,18 @@
 			<trans-unit id="module.list.metadata_updated">
 				<source>Metadata updated</source>
 			</trans-unit>
+			<trans-unit id="module.action.edit">
+				<source>Edit</source>
+			</trans-unit>
+			<trans-unit id="module.action.refereces">
+				<source>Show References</source>
+			</trans-unit>
+			<trans-unit id="module.action.update">
+				<source>Check and Update</source>
+			</trans-unit>
+			<trans-unit id="module.action.viewInOracle">
+				<source>View in Oracle DAM</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
