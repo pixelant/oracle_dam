@@ -24,12 +24,12 @@ class ExtensionConfigurationManager implements SingletonInterface
     /**
      * @var string
      */
-    protected $repositoryID;
+    protected $repositoryId;
 
     /**
      * @var string
      */
-    protected $channelID;
+    protected $channelId;
 
     /**
      * @var string
@@ -45,8 +45,8 @@ class ExtensionConfigurationManager implements SingletonInterface
         $configuration = $this->extensionConfiguration->get('oracle_dam');
 
         $this->oceDomain = getenv('APP_ORACLE_DAM_DOMAIN') ?: (string)$configuration['oceDomain'];
-        $this->repositoryID = getenv('APP_ORACLE_DAM_REPOSITORY') ?: (string)$configuration['repositoryID'];
-        $this->channelID = getenv('APP_ORACLE_DAM_CHANNEL') ?: (string)$configuration['channelID'];
+        $this->repositoryId = getenv('APP_ORACLE_DAM_REPOSITORY') ?: (string)$configuration['repositoryId'];
+        $this->channelId = getenv('APP_ORACLE_DAM_CHANNEL') ?: (string)$configuration['channelId'];
         $this->javaScriptUiUrl = getenv('APP_ORACLE_DAM_JS_URL')
             ?: (string)$configuration['jsUiUrl']
             ?: self::JAVASCRIPT_UI_URL;
@@ -71,17 +71,17 @@ class ExtensionConfigurationManager implements SingletonInterface
     /**
      * @return string
      */
-    public function getRepositoryID(): string
+    public function getRepositoryId(): string
     {
-        return $this->repositoryID;
+        return $this->repositoryId;
     }
 
     /**
      * @return string
      */
-    public function getChannelID(): string
+    public function getChannelId(): string
     {
-        return $this->channelID;
+        return $this->channelId;
     }
 
     /**
@@ -99,6 +99,6 @@ class ExtensionConfigurationManager implements SingletonInterface
      */
     public function isConfigured(): bool
     {
-        return !empty($this->oceDomain) && !empty($this->repositoryID) && !empty($this->channelID);
+        return !empty($this->oceDomain) && !empty($this->repositoryId) && !empty($this->channelId);
     }
 }

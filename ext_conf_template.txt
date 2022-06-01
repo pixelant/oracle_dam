@@ -2,7 +2,7 @@
 oceDomain =
 
 # cat=basic/configure/2; type=string; label=Repository ID: A 32-character hexademical string identifying the repository. E.g.: 012345678ABCDEF012345678ABCDEF
-repositoryID =
+repositoryId =
 
 # cat=basic/configure/3; type=string; label=Channel ID: The identifier of the channel to pick assets from.
 channelID =
