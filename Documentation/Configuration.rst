@@ -29,6 +29,7 @@ Basic
 
    :Required: true
    :type: string
+   :Environment variable: APP_ORACLE_DAM_DOMAIN
    :Example: myinstance.cec.ocp.oraclecloud.com
 
    The domain of the remote Oracle Content DAM instance.
@@ -37,6 +38,7 @@ Basic
 
    :Required: true
    :type: string
+   :Environment variable: APP_ORACLE_DAM_REPOSITORY
    :Example: 0123456789ABCDEF0123456789ABCDEF
 
    The ID of the repository to use when selecting images.
@@ -45,6 +47,7 @@ Basic
 
    :Required: true
    :type: string
+   :Environment variable: APP_ORACLE_DAM_CHANNEL
    :Example: RCHANNEL0123456789ABCDEF0123456789ABCDEF
 
    The channel ID to use when selecting images.
@@ -58,6 +61,7 @@ Advanced
 
    :Required: false
    :type: url
+   :Environment variable: APP_ORACLE_DAM_JS_URL
    :Default: https://static.ocecdn.oraclecloud.com/cdn/cec/api/oracle-ce-ui-2.11.js
 
    The URL to the JavaScript file for the image selector UI.

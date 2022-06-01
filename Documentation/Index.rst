@@ -42,6 +42,7 @@ Management (DAM) in TYPO3.
    :titlesonly:
 
    Introduction
+   Configuration
 
 .. Meta Menu
 
