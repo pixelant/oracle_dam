@@ -44,10 +44,10 @@ class ExtensionConfigurationManager implements SingletonInterface
         $this->extensionConfiguration = $extensionConfiguration;
         $configuration = $this->extensionConfiguration->get('oracle_dam');
 
-        $this->oceDomain = getenv('APP_ORACLE_DAM_OCE_DOMAIN') ?: (string)$configuration['oceDomain'];
-        $this->repositoryID = getenv('APP_ORACLE_DAM_REPOSITORY_ID') ?: (string)$configuration['repositoryID'];
-        $this->channelID = getenv('APP_ORACLE_DAM_CHANNEL_ID') ?: (string)$configuration['channelID'];
-        $this->javaScriptUiUrl = getenv('APP_ORACLE_DAM_JS_UI_URL')
+        $this->oceDomain = getenv('APP_ORACLE_DAM_DOMAIN') ?: (string)$configuration['oceDomain'];
+        $this->repositoryID = getenv('APP_ORACLE_DAM_REPOSITORY') ?: (string)$configuration['repositoryID'];
+        $this->channelID = getenv('APP_ORACLE_DAM_CHANNEL') ?: (string)$configuration['channelID'];
+        $this->javaScriptUiUrl = getenv('APP_ORACLE_DAM_JS_URL')
             ?: (string)$configuration['jsUiUrl']
             ?: self::JAVASCRIPT_UI_URL;
     }
@@ -57,7 +57,7 @@ class ExtensionConfigurationManager implements SingletonInterface
      */
     public static function getDownloadFolder(): ?string
     {
-        return '1:user_upload/oracle_dam';
+        return '1:user_upload/oracle';
     }
 
     /**
