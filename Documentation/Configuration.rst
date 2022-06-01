@@ -33,11 +33,31 @@ Basic
 
    The domain of the remote Oracle Content DAM instance.
 
-.. confval:: repositoryID
+.. confval:: repositoryId
 
    :Required: true
    :type: string
    :Example: 0123456789ABCDEF0123456789ABCDEF
 
-   The domain of the remote Oracle Content DAM instance.
+   The ID of the repository to use when selecting images.
 
+.. confval:: channelId
+
+   :Required: true
+   :type: string
+   :Example: RCHANNEL0123456789ABCDEF0123456789ABCDEF
+
+   The channel ID to use when selecting images.
+
+.. _configuration-advanced:
+
+Advanced
+--------
+
+.. confval:: jsUiUrl
+
+   :Required: false
+   :type: url
+   :Default: https://static.ocecdn.oraclecloud.com/cdn/cec/api/oracle-ce-ui-2.11.js
+
+   The URL to the JavaScript file for the image selector UI.

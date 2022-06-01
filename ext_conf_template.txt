@@ -5,7 +5,7 @@ oceDomain =
 repositoryId =
 
 # cat=basic/configure/3; type=string; label=Channel ID: The identifier of the channel to pick assets from.
-channelID =
+channelId =
 
 # cat=advanced/configure/3; type=string; label=JavaScript URL: Override the default URL of the selector UI JavaScript.
 jsUiUrl =
