@@ -13,3 +13,5 @@
 /package-lock.json
 /nbproject
 /var
+/node_modules
+.DS_Store
