@@ -45,7 +45,7 @@ class DownloadAssetCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         foreach ($input->getArgument('assetId') as $assetId) {
-            $file = $this->assetService->createLocalAssetCopy((int)$assetId);
+            $file = $this->assetService->createLocalAssetCopy($assetId);
 
             if ($file === null) {
                 $output->writeln('<error>Failed downloading asset with ID ' . $assetId . '</error>');

@@ -129,8 +129,8 @@ class SelectorButtonContainer extends InlineControlContainer
     {
         $configuration = [
             'oceDomain' => $this->extensionConfigurationManager->getOceDomain(),
-            'channelId' => $this->extensionConfigurationManager->getChannelID(),
-            'repositoryId' => $this->extensionConfigurationManager->getRepositoryID(),
+            'channelId' => $this->extensionConfigurationManager->getChannelId(),
+            'repositoryId' => $this->extensionConfigurationManager->getRepositoryId(),
             'jsUiUrl' => $this->extensionConfigurationManager->getJavaScriptUiUrl(),
         ];
 

@@ -30,8 +30,8 @@ Oracle DAM
 
 ----
 
-Select and import assets from the Oracle Content and Experience (OCE) Digital
-Asset Management (DAM) in TYPO3.
+Select and import assets from Oracle Content Management (OCM) Digital Asset
+Management (DAM) in TYPO3.
 
 ----
 
@@ -42,6 +42,9 @@ Asset Management (DAM) in TYPO3.
    :titlesonly:
 
    Introduction
+   Installation
+   Configuration
+   CliCommands
 
 .. Meta Menu
 
