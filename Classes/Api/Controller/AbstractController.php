@@ -2,6 +2,32 @@
 
 namespace Oracle\Typo3Dam\Api\Controller;
 
-abstract class AbstractController {
+use GuzzleHttp\Client;
+use Oracle\Typo3Dam\Api\OracleApi;
 
+abstract class AbstractController {
+    /**
+     * @var Client
+     */
+    protected $client;
+
+    /**
+     * @param Client $client
+     */
+    public function __construct(Client $client) {
+        $this->client = $client;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return array
+     */
+    protected function getContentItem(String $id): array
+    {
+        $response = $this->client->request('GET', '/content/management/api/v1.1/items/' . $id);
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        return $data;
+    }
 }
