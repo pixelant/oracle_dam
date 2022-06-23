@@ -11,7 +11,8 @@ class AssetRepository extends AbstractOracleDamRepository
      *
      * @return array
      */
-    public function findById( string $id ) {
+    public function findById(string $id)
+    {
         return $this->api->content()->retrieveContent($id);
     }
 
@@ -20,7 +21,8 @@ class AssetRepository extends AbstractOracleDamRepository
      *
      * @return string
      */
-    public function downloadByUrl( string $url ) {
+    public function downloadByUrl(string $url)
+    {
         return $this->api->getAuthenticatedUrl($url);
     }
 }

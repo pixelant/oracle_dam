@@ -8,6 +8,7 @@ use Oracle\Typo3Dam\Configuration\ExtensionConfigurationManager;
 use Oracle\Typo3Dam\Domain\Repository\AssetRepository;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
@@ -66,6 +67,11 @@ class AssetService implements SingletonInterface
      */
     public function createLocalAssetCopy(string $id): ?File
     {
+        $file = $this->findLocalAssetCopy($id);
+        if ($file !== null) {
+            return $file;
+        }
+
         $fullAssetInfo               = $this->assetRepository->findById($id) ?? null;
         $assetInfo                   = [];
         $assetInfo['id']             = $fullAssetInfo['id'] ?? '';
@@ -83,7 +89,7 @@ class AssetService implements SingletonInterface
             array_column($fullAssetInfo['fields']['renditions'][$rendition]['formats'], 'format')
         );
         $assetInfo['url']
-            = $fullAssetInfo['fields']['renditions'][$rendition]['formats'][$format]['links'][0]['href'] ?? '';
+                                     = $fullAssetInfo['fields']['renditions'][$rendition]['formats'][$format]['links'][0]['href'] ?? '';
 
         $assetData = $this->assetRepository->downloadByUrl($assetInfo['url']);
         try {
@@ -102,6 +108,31 @@ class AssetService implements SingletonInterface
         $file = $downloadFolder->createFile($assetInfo['name']);
         $file->setContents($assetData);
 
+        $this->updateFileRecord($file->getUid(), true, true, $id);
+
+        $data = [
+            'sys_file_metadata' => [
+                (string)$file->getMetaData()->offsetGet('uid') => [
+                    'title'       => $assetInfo['title'],
+                    'caption'     => $assetInfo['caption'],
+                    'alternative' => $assetInfo['alternate_text'],
+                ],
+            ],
+        ];
+
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+
+        $dataHandler->start($data, []);
+        $dataHandler->process_datamap();
+
+        if (count($dataHandler->errorLog) > 0) {
+            throw new PersistMetaDataChangesException(
+                'Errors found in DataHandler error log: ' . implode(',', $dataHandler->errorLog),
+                1622744599
+            );
+        }
+
         return $file;
     }
 
@@ -114,7 +145,23 @@ class AssetService implements SingletonInterface
      */
     protected function findLocalAssetCopy(string $id): ?File
     {
-        return null;
+        $queryBuilder = $this->getFileQueryBuilder();
+
+        $fileUid = $queryBuilder
+            ->select('uid')
+            ->from('sys_file')
+            ->where($queryBuilder->expr()->eq(
+                'tx_oracledam_id',
+                $queryBuilder->createNamedParameter($id)
+            ))
+            ->execute()
+            ->fetchColumn();
+
+        if ($fileUid === false) {
+            return null;
+        }
+
+        return $this->resourceFactory->getFileObject($fileUid);
     }
 
     /**
@@ -133,7 +180,7 @@ class AssetService implements SingletonInterface
      * @param int $fileUid The local file UID
      * @param bool $changedFile True if file has been changed
      * @param bool $changedMetadata True if metadata has been changed
-     * @param string|null $assetId
+     * @param string|null $assetId The Oracle asset ID. Not needed unless it's the first time record is written.
      */
     protected function updateFileRecord(
         int $fileUid,
@@ -141,7 +188,33 @@ class AssetService implements SingletonInterface
         bool $changedMetadata,
         ?string $assetId = null
     ): void {
+        $queryBuilder = $this->getFileQueryBuilder();
+        $queryBuilder->update('sys_file');
 
+        if ($changedFile) {
+            $queryBuilder->set(
+                'tx_oracledam_file_timestamp',
+                time()
+            );
+        }
+
+        if ($changedMetadata) {
+            $queryBuilder->set(
+                'tx_oracledam_metadata_timestamp',
+                time()
+            );
+        }
+
+        if (null !== $assetId) {
+            $queryBuilder->set(
+                'tx_oracledam_id',
+                $assetId
+            );
+        }
+
+        $queryBuilder
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($fileUid, \PDO::PARAM_INT)))
+            ->execute();
     }
 
     /**

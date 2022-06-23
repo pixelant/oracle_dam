@@ -9,6 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use TYPO3\CMS\Core\Core\Bootstrap;
 
 class DownloadAssetCommand extends Command
 {
@@ -27,6 +28,10 @@ class DownloadAssetCommand extends Command
         $this->assetService = $assetService;
     }
 
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        Bootstrap::initializeBackendAuthentication();
+    }
 
     protected function configure()
     {

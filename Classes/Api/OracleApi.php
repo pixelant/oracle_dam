@@ -40,8 +40,15 @@ class OracleApi {
      */
     protected $clientSecret;
 
-    /** @var ContentDeliveryController */
+    /**
+     * @var ContentDeliveryController
+     */
     protected $contentDeliveryController = null;
+
+    /**
+     * @var CachePolicy
+     */
+    protected $cachePolicy;
 
     /**
      * @param string $url
