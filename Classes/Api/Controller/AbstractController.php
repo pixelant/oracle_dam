@@ -28,8 +28,7 @@ abstract class AbstractController
     protected function getContentItem(string $id): array
     {
         $response = $this->client->request('GET', '/content/management/api/v1.1/items/' . $id);
-        $data     = json_decode($response->getBody()->getContents(), true);
 
-        return $data;
+        return json_decode($response->getBody()->getContents(), true);
     }
 }

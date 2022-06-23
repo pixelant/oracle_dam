@@ -72,25 +72,7 @@ class AssetService implements SingletonInterface
             return $file;
         }
 
-        $fullAssetInfo               = $this->assetRepository->findById($id) ?? null;
-        $assetInfo                   = [];
-        $assetInfo['id']             = $fullAssetInfo['id'] ?? '';
-        $assetInfo['name']           = $fullAssetInfo['name'] ?? '';
-        $assetInfo['title']          = $fullAssetInfo['fields']['title'] ?? '';
-        $assetInfo['alternate_text'] = $fullAssetInfo['fields']['alternate_text'] ?? '';
-        $assetInfo['caption']        = $fullAssetInfo['fields']['caption'] ?? '';
-        $assetInfo['modified_date']  = time();
-        $rendition                   = array_search(
-            'Large',
-            array_column($fullAssetInfo['fields']['renditions'], 'name')
-        );
-        $format                      = array_search(
-            'jpg',
-            array_column($fullAssetInfo['fields']['renditions'][$rendition]['formats'], 'format')
-        );
-        $assetInfo['url']
-                                     = $fullAssetInfo['fields']['renditions'][$rendition]['formats'][$format]['links'][0]['href'] ?? '';
-
+        $assetInfo = $this->assetRepository->findById($id) ?? null;
         $assetData = $this->assetRepository->downloadByUrl($assetInfo['url']);
         try {
             $downloadFolder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier(
@@ -110,28 +92,7 @@ class AssetService implements SingletonInterface
 
         $this->updateFileRecord($file->getUid(), true, true, $id);
 
-        $data = [
-            'sys_file_metadata' => [
-                (string)$file->getMetaData()->offsetGet('uid') => [
-                    'title'       => $assetInfo['title'],
-                    'caption'     => $assetInfo['caption'],
-                    'alternative' => $assetInfo['alternate_text'],
-                ],
-            ],
-        ];
-
-        /** @var DataHandler $dataHandler */
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-
-        $dataHandler->start($data, []);
-        $dataHandler->process_datamap();
-
-        if (count($dataHandler->errorLog) > 0) {
-            throw new PersistMetaDataChangesException(
-                'Errors found in DataHandler error log: ' . implode(',', $dataHandler->errorLog),
-                1622744599
-            );
-        }
+        $this->synchronizeMetadata($file->getUid());
 
         return $file;
     }
@@ -224,7 +185,33 @@ class AssetService implements SingletonInterface
      */
     public function synchronizeMetadata(int $fileId): void
     {
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+        $file            = $resourceFactory->getFileObject($fileId);
+        $id              = $this->getAssetIdentifierForFile($fileId);
+        $assetInfo       = $this->assetRepository->findById($id) ?? null;
 
+        $data = [
+            'sys_file_metadata' => [
+                (string)$file->getMetaData()->offsetGet('uid') => [
+                    'title'       => $assetInfo['title'],
+                    'caption'     => $assetInfo['caption'],
+                    'alternative' => $assetInfo['alternate_text'],
+                ],
+            ],
+        ];
+
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+
+        $dataHandler->start($data, []);
+        $dataHandler->process_datamap();
+
+        if (count($dataHandler->errorLog) > 0) {
+            throw new PersistMetaDataChangesException(
+                'Errors found in DataHandler error log: ' . implode(',', $dataHandler->errorLog),
+                1622744599
+            );
+        }
     }
 
     /**
@@ -232,13 +219,33 @@ class AssetService implements SingletonInterface
      *
      * @param int $fileId The FAL file UID
      */
-    public function replaceLocalMedia(int $fileId): void
+    public function replaceLocalAsset(int $fileId): void
     {
+        $file = $this->resourceFactory->getFileObject($fileId);
+        if ($file === null) {
+            throw new FileDoesNotExistException(
+                'No file found for given UID: ' . $fileId,
+                1623070299
+            );
+        }
 
+        $replacedByAssetIdentifier = $this->getAssetIdentifierForFile($fileId);
+
+        $replacedByFile = $this->createLocalAssetCopy($replacedByAssetIdentifier);
+        if ($replacedByFile === null) {
+            throw new FileDoesNotExistException(
+                'No file found for given Oracle asset id: ' . $replacedByAssetIdentifier,
+                1623306399
+            );
+        }
+
+        /**
+         * @todo Handle file references
+         */
     }
 
     /**
-     * Returns true if the sys_file uid suppplied in $fileId is a Oracle DAM file.
+     * Returns true if the sys_file uid supplied in $fileId is an Oracle DAM file.
      *
      * @param int $fileId
      */
@@ -256,6 +263,22 @@ class AssetService implements SingletonInterface
      */
     protected function getAssetIdentifierForFile(int $fileId): ?string
     {
+        $oracleAssetId = null;
+        $queryBuilder  = $this->getFileQueryBuilder();
+        $statement     = $queryBuilder
+            ->select('tx_oracledam_id')
+            ->from('sys_file')
+            ->where($queryBuilder
+                ->expr()
+                ->eq('uid', $queryBuilder
+                    ->createNamedParameter($fileId, \PDO::PARAM_INT)))
+            ->execute();
+        while ($row = $statement->fetch()) {
+            $oracleAssetId = $row['tx_oracledam_id'];
+        }
 
+        $oracleAssetId ?? null;
+
+        return $oracleAssetId;
     }
 }

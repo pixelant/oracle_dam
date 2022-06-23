@@ -98,7 +98,8 @@ class OracleApi {
     /**
      * @return ContentDeliveryController
      */
-    public function content() {
+    public function content()
+    {
         if ($this->contentDeliveryController === null) {
             $this->contentDeliveryController = new ContentDeliveryController($this->getClient());
         }
@@ -111,7 +112,8 @@ class OracleApi {
      *
      * @return string
      */
-    public function getAuthenticatedUrl(string $url) {
+    public function getAuthenticatedUrl(string $url)
+    {
         $response = $this->getClient()->request('GET', $url);
 
         return $response->getBody()->getContents();
