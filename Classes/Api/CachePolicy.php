@@ -7,9 +7,9 @@ namespace Oracle\Typo3Dam\Api;
  */
 class CachePolicy
 {
-    const OFF = 0;
-    const EVERYTHING = 1;
-    const TOKEN_ONLY = 2;
+    public const OFF = 0;
+    public const EVERYTHING = 1;
+    public const TOKEN_ONLY = 2;
 
     /** @var int */
     protected $cacheType;
@@ -23,18 +23,20 @@ class CachePolicy
      * @param int $cacheType The behaviour of the cache. Must be one of the CachePolicy constants.
      * @param int $lifetime  The cache lifetime in seconds.
      */
-    public function __construct($cacheType, $lifetime)
+    public function __construct(int $cacheType, int $lifetime)
     {
         $this->setCacheType($cacheType);
-        $this->lifetime = (int) $lifetime;
+        $this->lifetime = $lifetime;
     }
 
     protected function setCacheType($cacheType)
     {
         if (!in_array($cacheType, [self::OFF, self::EVERYTHING, self::TOKEN_ONLY])) {
-            throw new \OutOfRangeException('Invalid cache type "' . $cacheType . '". Must be one of the CachePolicy constants.');
+            throw new \OutOfRangeException(
+                'Invalid cache type "' . $cacheType . '". Must be one of the CachePolicy constants.'
+            );
         }
-        $this->cacheType = (int) $cacheType;
+        $this->cacheType = $cacheType;
     }
 
     public function isEnabled()

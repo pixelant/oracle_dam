@@ -33,8 +33,10 @@ class SelectorController
         $assetIds = GeneralUtility::trimExplode(',', $request->getParsedBody()['assets'], true);
 
         return $this->getSuccessResponse([
-            'fileUids' => [5], // Insert correct ID here.
-            'assetIds' => $assetIds, // Can be removed.
+            'fileUids' => [5],
+// Insert correct ID here.
+            'assetIds' => $assetIds,
+// Can be removed.
         ]);
     }
 
@@ -60,7 +62,7 @@ class SelectorController
     /**
      * Returns a success response object with message set.
      *
-     * @param string $message
+     * @param array $data
      * @return JsonResponse
      */
     protected function getSuccessResponse(array $data): JsonResponse

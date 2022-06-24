@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Oracle\Typo3Dam\Service;
 
+use Doctrine\DBAL\Result;
+use Oracle\Typo3Dam\Api\Exception\PersistMetaDataChangesException;
 use Oracle\Typo3Dam\Configuration\ExtensionConfigurationManager;
 use Oracle\Typo3Dam\Domain\Repository\AssetRepository;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -63,7 +65,6 @@ class AssetService implements SingletonInterface
      * @param string $id
      *
      * @return File The local file representation
-     * @throws \TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException
      */
     public function createLocalAssetCopy(string $id): ?File
     {
@@ -90,9 +91,9 @@ class AssetService implements SingletonInterface
         $file = $downloadFolder->createFile($assetInfo['name']);
         $file->setContents($assetData);
 
-        $this->updateFileRecord($file->getUid(), true, true, $id);
+        $this->updateFileRecord($file, true, true, $id);
 
-        $this->synchronizeMetadata($file->getUid());
+        $this->synchronizeMetadata($file);
 
         return $file;
     }
@@ -138,13 +139,13 @@ class AssetService implements SingletonInterface
     /**
      * Update a sys_file record with DAM asset timestamp and relation information.
      *
-     * @param int $fileUid The local file UID
+     * @param File $file The local file UID
      * @param bool $changedFile True if file has been changed
      * @param bool $changedMetadata True if metadata has been changed
      * @param string|null $assetId The Oracle asset ID. Not needed unless it's the first time record is written.
      */
     protected function updateFileRecord(
-        int $fileUid,
+        File $file,
         bool $changedFile,
         bool $changedMetadata,
         ?string $assetId = null
@@ -174,21 +175,25 @@ class AssetService implements SingletonInterface
         }
 
         $queryBuilder
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($fileUid, \PDO::PARAM_INT)))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($file->getUid(), \PDO::PARAM_INT)
+                )
+            )
             ->execute();
     }
 
     /**
      * Synchronize metadata for a particular file UID.
      *
-     * @param int $fileId The FAL file UID
+     * @param File $file The FAL file UID
+     * @throws PersistMetaDataChangesException
      */
-    public function synchronizeMetadata(int $fileId): void
+    public function synchronizeMetadata(File $file): void
     {
-        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-        $file            = $resourceFactory->getFileObject($fileId);
-        $id              = $this->getAssetIdentifierForFile($fileId);
-        $assetInfo       = $this->assetRepository->findById($id) ?? null;
+        $id = $this->getAssetIdentifierForFile($file);
+        $assetInfo = $this->assetRepository->findById($id) ?? null;
 
         $data = [
             'sys_file_metadata' => [
@@ -218,6 +223,7 @@ class AssetService implements SingletonInterface
      * Synchronize file content for a particular file UID.
      *
      * @param int $fileId The FAL file UID
+     * @throws FileDoesNotExistException
      */
     public function replaceLocalAsset(int $fileId): void
     {
@@ -240,7 +246,7 @@ class AssetService implements SingletonInterface
         }
 
         /**
-         * @todo Handle file references
+         * Handle file references
          */
     }
 
@@ -257,28 +263,30 @@ class AssetService implements SingletonInterface
     /**
      * Returns the Oracle asset ID for the sys_file UID supplied in $fileId.
      *
-     * @param int $fileId
-     *
+     * @param File $file
      * @return string|null The Oracle asset ID. Zero if not found or file is not an Oracle DAM asset.
+     * @throws \UnexpectedValueException
      */
-    protected function getAssetIdentifierForFile(int $fileId): ?string
+    protected function getAssetIdentifierForFile(File $file): ?string
     {
-        $oracleAssetId = null;
-        $queryBuilder  = $this->getFileQueryBuilder();
-        $statement     = $queryBuilder
+        $queryBuilder = $this->getFileQueryBuilder();
+
+        $result = $queryBuilder
             ->select('tx_oracledam_id')
             ->from('sys_file')
             ->where($queryBuilder
                 ->expr()
                 ->eq('uid', $queryBuilder
-                    ->createNamedParameter($fileId, \PDO::PARAM_INT)))
+                    ->createNamedParameter($file->getUid(), \PDO::PARAM_INT)))
             ->execute();
-        while ($row = $statement->fetch()) {
-            $oracleAssetId = $row['tx_oracledam_id'];
+
+        if (!$result instanceof Result) {
+            throw new \UnexpectedValueException(
+                'Query did not return object of type ' . Result::class,
+                1656075346055
+            );
         }
 
-        $oracleAssetId ?? null;
-
-        return $oracleAssetId;
+        return $result->fetch()['tx_oracledam_id'] ?? null;
     }
 }

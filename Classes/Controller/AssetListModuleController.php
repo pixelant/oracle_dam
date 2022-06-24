@@ -34,10 +34,17 @@ class AssetListModuleController
      */
     protected $view;
 
-    public function __construct(ModuleTemplate $moduleTemplate = null, ExtensionConfigurationManager $configurationManager = null)
-    {
+    /**
+     * @param ModuleTemplate|null $moduleTemplate
+     * @param ExtensionConfigurationManager|null $configurationManager
+     */
+    public function __construct(
+        ModuleTemplate $moduleTemplate = null,
+        ExtensionConfigurationManager $configurationManager = null
+    ) {
         $this->moduleTemplate = $moduleTemplate ?? GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->configurationManager = $configurationManager ?? GeneralUtility::makeInstance(ExtensionConfigurationManager::class);
+        $this->configurationManager = $configurationManager
+            ?? GeneralUtility::makeInstance(ExtensionConfigurationManager::class);
     }
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -69,7 +76,6 @@ class AssetListModuleController
 
     /**
      * @param ServerRequestInterface $request
-     * @return void
      */
     public function listAction(ServerRequestInterface $request): void
     {
@@ -79,19 +85,14 @@ class AssetListModuleController
             [
                 'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
                 'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
-                'oceDomain' => $this->configurationManager->getOceDomain()
+                'oceDomain' => $this->configurationManager->getOceDomain(),
             ]
         );
     }
 
-    /**
-     * @return void
-     */
     public function updateFileAction(ServerRequestInterface $request)
     {
-
-
-        $this->listAction();
+        $this->listAction($request);
     }
 
     private function setDocHeader(string $active)

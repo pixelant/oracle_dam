@@ -20,6 +20,12 @@ abstract class AbstractOracleDamRepository implements SingletonInterface
      */
     public function __construct(ExtensionConfigurationManager $configuration)
     {
-        $this->api = new OracleApi('https://' . $configuration->getOceDomain(), 'https://' . $configuration->getTokenDomain(), $configuration->getScope(), $configuration->getClientId(), $configuration->getClientSecret());
+        $this->api = new OracleApi(
+            'https://' . $configuration->getOceDomain(),
+            'https://' . $configuration->getTokenDomain(),
+            $configuration->getScope(),
+            $configuration->getClientId(),
+            $configuration->getClientSecret()
+        );
     }
 }

@@ -3,7 +3,6 @@
 namespace Oracle\Typo3Dam\Api\Controller;
 
 use GuzzleHttp\Client;
-use Oracle\Typo3Dam\Api\OracleApi;
 
 abstract class AbstractController
 {

@@ -37,7 +37,7 @@ class AssetRepository extends AbstractOracleDamRepository
             'title'          => $data['fields']['title'] ?? '',
             'alternate_text' => $data['fields']['alternate_text'] ?? '',
             'caption'        => $data['fields']['caption'] ?? '',
-            'url'            => $data['fields']['renditions'][$rendition]['formats'][$format]['links'][0]['href'] ?? ''
+            'url'            => $data['fields']['renditions'][$rendition]['formats'][$format]['links'][0]['href'] ?? '',
         ];
 
         return self::$assetCache[$id];

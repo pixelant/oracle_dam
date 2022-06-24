@@ -7,43 +7,43 @@ use GuzzleHttp\HandlerStack;
 use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
 use Oracle\Typo3Dam\Api\Controller\ContentDeliveryController;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class OracleApi {
+class OracleApi
+{
     /**
      * @var Client
      */
     protected $client;
 
     /**
-     * @var URL
+     * @var string
      */
     protected $url;
 
     /**
-     * @var Token URL
+     * @var string
      */
     protected $tokenUrl;
 
     /**
-     * @var Scope
+     * @var string
      */
     protected $scope;
 
     /**
-     * @var Client ID
+     * @var string
      */
     protected $clientId;
 
     /**
-     * @var Client Secret
+     * @var string
      */
     protected $clientSecret;
 
     /**
      * @var ContentDeliveryController
      */
-    protected $contentDeliveryController = null;
+    protected $contentDeliveryController;
 
     /**
      * @var CachePolicy
@@ -57,7 +57,8 @@ class OracleApi {
      * @param string $clientId
      * @param string $clientSecret
      */
-    public function __construct(string $url, string $tokenUrl, string $scope, string $clientId, string $clientSecret) {
+    public function __construct(string $url, string $tokenUrl, string $scope, string $clientId, string $clientSecret)
+    {
         $this->url = $url;
         $this->tokenUrl = $tokenUrl;
         $this->scope = $scope;
@@ -74,12 +75,12 @@ class OracleApi {
     {
         if (!($this->client instanceof Client)) {
             $reauth_client  = new Client([
-                'base_uri' => $this->tokenUrl . '/oauth2/v1/token'
+                'base_uri' => $this->tokenUrl . '/oauth2/v1/token',
             ]);
             $reauth_config = [
                 'client_id' => $this->clientId,
                 'client_secret' => $this->clientSecret,
-                'scope' => $this->scope
+                'scope' => $this->scope,
             ];
             $grant_type = new ClientCredentials($reauth_client, $reauth_config);
             $oauth = new OAuth2Middleware($grant_type);
@@ -88,7 +89,7 @@ class OracleApi {
             $this->client = new Client([
                 'base_uri' => $this->url,
                 'handler' => $stack,
-                'auth' => 'oauth'
+                'auth' => 'oauth',
             ]);
         }
 

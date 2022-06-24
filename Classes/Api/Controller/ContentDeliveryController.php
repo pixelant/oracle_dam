@@ -4,7 +4,6 @@ namespace Oracle\Typo3Dam\Api\Controller;
 
 class ContentDeliveryController extends AbstractController
 {
-
     /**
      * @param string $id
      *

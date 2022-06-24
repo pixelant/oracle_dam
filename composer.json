@@ -30,7 +30,8 @@
 		"typo3/cms-core": "^10.4 || ^11.5.2",
 		"typo3/cms-extbase": "^10.4 || ^11.5.2",
 		"typo3/cms-fluid": "^10.4 || ^11.5.2",
-		"typo3/cms-frontend": "^10.4 || ^11.5.2"
+		"typo3/cms-frontend": "^10.4 || ^11.5.2",
+		"ext-pdo": "*"
 	},
 	"require-dev": {
 		"codeception/codeception": "^4.1.31",

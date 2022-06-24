@@ -65,5 +65,4 @@ class DownloadAssetCommand extends Command
 
         return 0;
     }
-
 }
