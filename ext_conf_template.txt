@@ -10,11 +10,14 @@ channelId =
 # cat=basic/configure/4; type=string; label=OAuth Client ID: From the OC application.
 clientId =
 
-# cat=basic/configure/4; type=string; label=OAuth Client Secret: From the OCM client application.
+# cat=basic/configure/5; type=string; label=OAuth Client Secret: From the OCM client application.
 clientSecret =
 
-# cat=basic/configure/4; type=string; label=OAuth Authentication Scope: Ending in "urn:opc:cec:all". From the OCM client application.
+# cat=basic/configure/6; type=string; label=OAuth Authentication Scope: Ending in "urn:opc:cec:all". From the OCM client application.
 scope =
+
+# cat=basic/configure/6; type=string; label=Token Endpoint Domain: A domain ending in "identity.oraclecloud.com" for use when authenticating.
+tokenDomain =
 
 # cat=advanced/configure/3; type=string; label=JavaScript URL: Override the default URL of the selector UI JavaScript.
 jsUiUrl =
