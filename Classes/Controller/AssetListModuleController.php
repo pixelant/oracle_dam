@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Oracle\Typo3Dam\Controller;
 
 use Oracle\Typo3Dam\Configuration\ExtensionConfigurationManager;
+use Oracle\Typo3Dam\Domain\Repository\SysFileRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -81,11 +82,14 @@ class AssetListModuleController
     {
         $this->setDocHeader('list');
 
+        $fileRepository = GeneralUtility::makeInstance(SysFileRepository::class);
+
         $this->view->assignMultiple(
             [
                 'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
                 'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
                 'oceDomain' => $this->configurationManager->getOceDomain(),
+                'files' => $fileRepository->findFromOracle(),
             ]
         );
     }

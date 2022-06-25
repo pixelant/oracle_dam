@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Oracle\Typo3Dam\Domain\Repository;
 
+use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\Result;
 
 /**
@@ -73,5 +74,40 @@ class SysFileRepository extends AbstractLocalRepository
                 )
             )
             ->execute();
+    }
+
+    /**
+     * Returns all file records with an asset ID from Oracle.
+     *
+     * @return array
+     * @throws \UnexpectedValueException
+     */
+    public function findFromOracle(): array
+    {
+        $queryBuilder = $this->getQueryBuilder();
+
+        $result = $queryBuilder
+            ->select('f.*', 'm.uid as metadata_uid')
+            ->from(self::TABLE_NAME, 'f')
+            ->join(
+                'f',
+                'sys_file_metadata',
+                'm',
+                $queryBuilder->expr()->eq('f.uid', $queryBuilder->quoteIdentifier('m.file'))
+            )
+            ->where(
+                $queryBuilder->expr()->isNotNull(self::FIELD_ASSET_ID)
+            )
+            ->orderBy('name')
+            ->execute();
+
+        if (!$result instanceof Result) {
+            throw new \UnexpectedValueException(
+                'Query did not return object of type ' . Result::class,
+                1656144003193
+            );
+        }
+
+        return $result->fetchAll(FetchMode::ASSOCIATIVE);
     }
 }
