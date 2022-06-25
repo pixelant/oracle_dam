@@ -31,6 +31,7 @@
 		"typo3/cms-extbase": "^10.4 || ^11.5.2",
 		"typo3/cms-fluid": "^10.4 || ^11.5.2",
 		"typo3/cms-frontend": "^10.4 || ^11.5.2",
+		"kamermans/guzzle-oauth2-subscriber": "~1.0",
 		"ext-pdo": "*"
 	},
 	"require-dev": {
