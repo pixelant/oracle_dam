@@ -11,6 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -81,6 +82,9 @@ class AssetListModuleController
     public function listAction(ServerRequestInterface $request): void
     {
         $this->setDocHeader('list');
+
+        GeneralUtility::makeInstance(PageRenderer::class)
+            ->loadRequireJsModule('TYPO3/CMS/Filelist/FileList');
 
         $fileRepository = GeneralUtility::makeInstance(SysFileRepository::class);
 
