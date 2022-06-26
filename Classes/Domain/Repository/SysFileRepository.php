@@ -46,37 +46,6 @@ class SysFileRepository extends AbstractLocalRepository
     }
 
     /**
-     * @param int $fileUid
-     * @param array $data
-     * @return void
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    public function update(int $fileUid, array $data): void
-    {
-        if (count($data) === 0) {
-            return;
-        }
-
-        $queryBuilder = $this->getQueryBuilder();
-
-        foreach ($data as $field => $value) {
-            $queryBuilder->set($field, $value);
-        }
-
-        $queryBuilder->set('tstamp', time());
-
-        $queryBuilder
-            ->update(self::TABLE_NAME)
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($fileUid, \PDO::PARAM_INT)
-                )
-            )
-            ->execute();
-    }
-
-    /**
      * Returns all file records with an asset ID from Oracle.
      *
      * @return array

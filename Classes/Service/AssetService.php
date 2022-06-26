@@ -7,6 +7,7 @@ namespace Oracle\Typo3Dam\Service;
 use Oracle\Typo3Dam\Api\Exception\PersistMetaDataChangesException;
 use Oracle\Typo3Dam\Configuration\ExtensionConfigurationManager;
 use Oracle\Typo3Dam\Domain\Repository\AssetRepository;
+use Oracle\Typo3Dam\Domain\Repository\SysFileMetadataRepository;
 use Oracle\Typo3Dam\Domain\Repository\SysFileRepository;
 use Oracle\Typo3Dam\Service\Exception\AssetDoesNotExistException;
 use Oracle\Typo3Dam\Service\Exception\FileIsNotAnAssetException;
@@ -39,6 +40,11 @@ class AssetService implements SingletonInterface
     protected $fileRepository;
 
     /**
+     * @var SysFileMetadataRepository
+     */
+    protected $metadataRepository;
+
+    /**
      * @var ResourceFactory
      */
     protected $resourceFactory;
@@ -52,6 +58,7 @@ class AssetService implements SingletonInterface
      * @param ExtensionConfigurationManager $configuration
      * @param AssetRepository $assetRepository
      * @param SysFileRepository $fileRepository
+     * @param SysFileMetadataRepository $metadataRepository
      * @param ResourceFactory $resourceFactory
      * @param EventDispatcher $eventDispatcher
      */
@@ -59,12 +66,14 @@ class AssetService implements SingletonInterface
         ExtensionConfigurationManager $configuration,
         AssetRepository $assetRepository,
         SysFileRepository $fileRepository,
+        SysFileMetadataRepository $metadataRepository,
         ResourceFactory $resourceFactory,
         EventDispatcher $eventDispatcher
     ) {
         $this->configuration = $configuration;
         $this->assetRepository = $assetRepository;
         $this->fileRepository = $fileRepository;
+        $this->metadataRepository = $metadataRepository;
         $this->resourceFactory = $resourceFactory;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -181,7 +190,6 @@ class AssetService implements SingletonInterface
      * Synchronize metadata for a particular file UID.
      *
      * @param File $file The FAL file UID
-     * @throws PersistMetaDataChangesException
      * @throws FileIsNotAnAssetException
      * @throws AssetDoesNotExistException
      */
@@ -206,28 +214,16 @@ class AssetService implements SingletonInterface
             );
         }
 
-        $data = [
-            'sys_file_metadata' => [
-                (string)$file->getMetaData()->offsetGet('uid') => [
-                    'title'       => $assetInfo['title'],
-                    'caption'     => $assetInfo['caption'],
-                    'alternative' => $assetInfo['alternate_text'],
-                ],
-            ],
-        ];
+        $this->metadataRepository->update(
+            $file->getMetaData()->offsetGet('uid'),
+            [
+                'title' => $assetInfo['title'],
+                'caption' => $assetInfo['caption'],
+                'alternative' => $assetInfo['alternate_text'],
+            ]
+        );
 
-        /** @var DataHandler $dataHandler */
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-
-        $dataHandler->start($data, []);
-        $dataHandler->process_datamap();
-
-        if (count($dataHandler->errorLog) > 0) {
-            throw new PersistMetaDataChangesException(
-                'Errors found in DataHandler error log: ' . implode(',', $dataHandler->errorLog),
-                1622744599
-            );
-        }
+        $this->updateFileRecord($file, false, true);
     }
 
     /**
