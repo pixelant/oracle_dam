@@ -14,25 +14,30 @@ class SysFileRepository extends AbstractLocalRepository
 {
     public const TABLE_NAME = 'sys_file';
     public const FIELD_ASSET_ID = 'tx_oracledam_id';
+    public const FIELD_ASSET_VERSION = 'tx_oracledam_version';
     public const FIELD_FILE_TIMESTAMP = 'tx_oracledam_file_timestamp';
     public const FIELD_METADATA_TIMESTAMP = 'tx_oracledam_metadata_timestamp';
 
     /**
-     * @param int $fileUid
-     * @return string|null
+     * Find a file record by UID.
+     *
+     * @param int $uid
+     * @return array|null
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function getAssetIdentifier(int $fileUid): ?string
+    public function findByUid(int $uid): ?array
     {
         $queryBuilder = $this->getQueryBuilder();
 
         $result = $queryBuilder
-            ->select('tx_oracledam_id')
+            ->select('*')
             ->from(self::TABLE_NAME)
-            ->where($queryBuilder
-                ->expr()
-                ->eq('uid', $queryBuilder
-                    ->createNamedParameter($fileUid, \PDO::PARAM_INT)))
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                )
+            )
             ->execute();
 
         if (!$result instanceof Result) {
@@ -42,7 +47,27 @@ class SysFileRepository extends AbstractLocalRepository
             );
         }
 
-        return $result->fetch()[self::FIELD_ASSET_ID] ?? null;
+        return $result->fetch(FetchMode::ASSOCIATIVE) ?: null;
+    }
+
+    /**
+     * @param int $uid
+     * @return string|null
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getAssetIdentifier(int $uid): ?string
+    {
+        return $this->findByUid($uid)[self::FIELD_ASSET_ID] ?? null;
+    }
+
+    /**
+     * @param int $uid
+     * @return string
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getAssetVersion(int $uid): string
+    {
+        return $this->findByUid($uid)[self::FIELD_ASSET_VERSION] ?? '';
     }
 
     /**

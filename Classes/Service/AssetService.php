@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Oracle\Typo3Dam\Service;
 
-use Oracle\Typo3Dam\Api\Exception\PersistMetaDataChangesException;
 use Oracle\Typo3Dam\Configuration\ExtensionConfigurationManager;
 use Oracle\Typo3Dam\Domain\Repository\AssetRepository;
 use Oracle\Typo3Dam\Domain\Repository\SysFileMetadataRepository;
@@ -13,7 +12,6 @@ use Oracle\Typo3Dam\Service\Exception\AssetDoesNotExistException;
 use Oracle\Typo3Dam\Service\Exception\FileIsNotAnAssetException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
@@ -94,6 +92,7 @@ class AssetService implements SingletonInterface
 
         $assetInfo = $this->assetRepository->findById($id) ?? null;
         $assetData = $this->assetRepository->downloadByUrl($assetInfo['url']);
+
         try {
             $downloadFolder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier(
                 $this->configuration->getDownloadFolder()
@@ -107,10 +106,11 @@ class AssetService implements SingletonInterface
 
             $downloadFolder = $storage->createFolder($folderPath);
         }
+
         $file = $downloadFolder->createFile($assetInfo['name']);
         $file->setContents($assetData);
 
-        $this->updateFileRecord($file, true, true, $id);
+        $this->updateFileRecord($file, $assetInfo['version'], true, $id);
 
         $this->synchronizeMetadata($file);
 
@@ -159,19 +159,20 @@ class AssetService implements SingletonInterface
      * Update a sys_file record with DAM asset timestamp and relation information.
      *
      * @param File $file The local file UID
-     * @param bool $changedFile True if file has been changed
+     * @param string|null $newFileVersion If not null, contains the version string of the new file version.
      * @param bool $changedMetadata True if metadata has been changed
      * @param string|null $assetId The Oracle asset ID. Not needed unless it's the first time record is written.
      */
     protected function updateFileRecord(
         File $file,
-        bool $changedFile,
+        ?string $newFileVersion,
         bool $changedMetadata,
         ?string $assetId = null
     ): void {
         $data = [];
 
-        if ($changedFile) {
+        if ($newFileVersion !== null) {
+            $data[SysFileRepository::FIELD_ASSET_VERSION] = $newFileVersion;
             $data[SysFileRepository::FIELD_FILE_TIMESTAMP] = time();
         }
 
@@ -204,7 +205,7 @@ class AssetService implements SingletonInterface
             );
         }
 
-        $assetInfo = $this->assetRepository->findById($id) ?? null;
+        $assetInfo = $this->assetRepository->findById($id);
 
         if ($assetInfo === null) {
             throw new AssetDoesNotExistException(
@@ -223,38 +224,51 @@ class AssetService implements SingletonInterface
             ]
         );
 
-        $this->updateFileRecord($file, false, true);
+        $this->updateFileRecord($file, null, true);
     }
 
     /**
-     * Synchronize file content for a particular file UID.
+     * If it has changed remotely, update local file content for a particular file UID.
      *
-     * @param int $fileId The FAL file UID
+     * @param File $file The FAL file UID
      * @throws FileDoesNotExistException
      */
-    public function replaceLocalAsset(int $fileId): void
+    public function updateLocalAsset(File $file): void
     {
-        $file = $this->resourceFactory->getFileObject($fileId);
-        if ($file === null) {
-            throw new FileDoesNotExistException(
-                'No file found for given UID: ' . $fileId,
-                1623070299
+        $assetId = $this->getAssetIdentifierForFile($file);
+
+        if ($assetId === null) {
+            throw new FileIsNotAnAssetException(
+                'The file is not an Oracle DAM asset: ' . $file->getIdentifier() . ' [' . $file->getUid() . ']',
+                1656250692885
             );
         }
 
-        $replacedByAssetIdentifier = $this->getAssetIdentifierForFile($file);
+        $assetInfo = $this->assetRepository->findById($assetId);
 
-        $replacedByFile = $this->createLocalAssetCopy($replacedByAssetIdentifier);
-        if ($replacedByFile === null) {
-            throw new FileDoesNotExistException(
-                'No file found for given Oracle asset id: ' . $replacedByAssetIdentifier,
-                1623306399
+        if ($assetInfo === null) {
+            throw new AssetDoesNotExistException(
+                'The file does not exist in Oracle DAM. Asset ID ' . $assetId . ', represented locally by '
+                . $file->getIdentifier() . ' [' . $file->getUid() . ']',
+                1656250797016
             );
         }
 
-        /**
-         * Handle file references
-         */
+        if ($this->fileRepository->getAssetVersion($file->getUid()) === $assetInfo['version']) {
+            return;
+        }
+
+        $temporaryFileName = GeneralUtility::tempnam('oracle_dam');
+
+        $newContent = $this->assetRepository->downloadByUrl($assetInfo['url']);
+
+        file_put_contents($temporaryFileName, $newContent);
+
+        $file->getStorage()->replaceFile($file, $temporaryFileName);
+
+        GeneralUtility::unlink_tempfile($temporaryFileName);
+
+        $this->updateFileRecord($file, $assetInfo['version'], false);
     }
 
     /**

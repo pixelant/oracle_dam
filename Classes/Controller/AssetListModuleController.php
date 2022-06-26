@@ -154,8 +154,11 @@ class AssetListModuleController
             return $redirectResponse;
         }
 
+        $assetService = GeneralUtility::makeInstance(AssetService::class);
+
         try {
-            GeneralUtility::makeInstance(AssetService::class)->synchronizeMetadata($file);
+            $assetService->synchronizeMetadata($file);
+            $assetService->updateLocalAsset($file);
         } catch (AssetDoesNotExistException $exception) {
             $this->addFlashMessage(
                 sprintf(
