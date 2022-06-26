@@ -8,6 +8,8 @@ use Oracle\Typo3Dam\Api\Exception\PersistMetaDataChangesException;
 use Oracle\Typo3Dam\Configuration\ExtensionConfigurationManager;
 use Oracle\Typo3Dam\Domain\Repository\AssetRepository;
 use Oracle\Typo3Dam\Domain\Repository\SysFileRepository;
+use Oracle\Typo3Dam\Service\Exception\AssetDoesNotExistException;
+use Oracle\Typo3Dam\Service\Exception\FileIsNotAnAssetException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -180,11 +182,29 @@ class AssetService implements SingletonInterface
      *
      * @param File $file The FAL file UID
      * @throws PersistMetaDataChangesException
+     * @throws FileIsNotAnAssetException
+     * @throws AssetDoesNotExistException
      */
     public function synchronizeMetadata(File $file): void
     {
         $id = $this->getAssetIdentifierForFile($file);
+
+        if ($id === null) {
+            throw new FileIsNotAnAssetException(
+                'The file is not an Oracle DAM asset: ' . $file->getIdentifier() . ' [' . $file->getUid() . ']',
+                1656235334707
+            );
+        }
+
         $assetInfo = $this->assetRepository->findById($id) ?? null;
+
+        if ($assetInfo === null) {
+            throw new AssetDoesNotExistException(
+                'The file does not exist in Oracle DAM. Asset ID ' . $id . ', represented locally by '
+                . $file->getIdentifier() . ' [' . $file->getUid() . ']',
+                1656235537826
+            );
+        }
 
         $data = [
             'sys_file_metadata' => [

@@ -55,6 +55,30 @@
 			<trans-unit id="module.action.update">
 				<source>Check and Update</source>
 			</trans-unit>
+			<trans-unit id="module.action.update.notADamFileTitle">
+				<source>Not a DAM File</source>
+			</trans-unit>
+			<trans-unit id="module.action.update.notADamFileMessage">
+				<source>The file "%s" is not an asset from Oracle DAM.</source>
+			</trans-unit>
+			<trans-unit id="module.action.update.assetNotFoundTitle">
+				<source>Not Found in DAM</source>
+			</trans-unit>
+			<trans-unit id="module.action.update.assetNotFoundMessage">
+				<source>The file "%s" could not be found in the DAM.</source>
+			</trans-unit>
+			<trans-unit id="module.action.update.fileNotFoundTitle">
+				<source>File Not Found</source>
+			</trans-unit>
+			<trans-unit id="module.action.update.fileNotFoundMessage">
+				<source>File ID "%s" does not exist.</source>
+			</trans-unit>
+			<trans-unit id="module.action.update.successTitle">
+				<source>Successfully Checked and Updated</source>
+			</trans-unit>
+			<trans-unit id="module.action.update.successMessage">
+				<source>The file "%s" was successfully compared with the DAM and any necessary updates were applied.</source>
+			</trans-unit>
 			<trans-unit id="module.action.viewInOracle">
 				<source>View in Oracle DAM</source>
 			</trans-unit>

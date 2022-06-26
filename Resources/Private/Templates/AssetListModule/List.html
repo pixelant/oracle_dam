@@ -6,6 +6,8 @@
     <f:layout name="Default" />
 
     <f:section name="content">
+        <f:flashMessages />
+
         <h1><f:translate key="module.list.title" extensionName="oracle_dam" /></h1>
         <p><f:translate key="module.list.description" extensionName="oracle_dam" /></p>
 
@@ -66,7 +68,7 @@
 
                                 <f:be.link
                                     route="file_oracleDamAssetList"
-                                    parameters="{action: 'updateFile', file: qbankFile.uid}"
+                                    parameters="{action: 'updateFile', file: file.uid}"
                                     title="{f:translate(key: 'module.action.update', extensionName: 'oracle_dam')}"
                                     class="btn btn-success">
                                     <core:icon identifier="actions-database-reload" /> {f:translate(key: 'module.action.update', extensionName: 'oracle_dam')}
