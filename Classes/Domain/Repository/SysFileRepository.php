@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Oracle\Typo3Dam\Domain\Repository;
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\Result;
 
@@ -23,7 +24,7 @@ class SysFileRepository extends AbstractLocalRepository
      *
      * @param int $uid
      * @return array|null
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \UnexpectedValueException
      */
     public function findByUid(int $uid): ?array
     {
@@ -47,13 +48,14 @@ class SysFileRepository extends AbstractLocalRepository
             );
         }
 
+        // @phpstan-ignore-next-line
         return $result->fetch(FetchMode::ASSOCIATIVE) ?: null;
     }
 
     /**
      * @param int $uid
      * @return string|null
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function getAssetIdentifier(int $uid): ?string
     {
@@ -63,7 +65,7 @@ class SysFileRepository extends AbstractLocalRepository
     /**
      * @param int $uid
      * @return string
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function getAssetVersion(int $uid): string
     {
@@ -102,6 +104,7 @@ class SysFileRepository extends AbstractLocalRepository
             );
         }
 
+        // @phpstan-ignore-next-line
         return $result->fetchAll(FetchMode::ASSOCIATIVE);
     }
 }

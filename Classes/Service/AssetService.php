@@ -13,7 +13,6 @@ use Oracle\Typo3Dam\Service\Exception\FileIsNotAnAssetException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
-use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -128,6 +127,7 @@ class AssetService implements SingletonInterface
     {
         $queryBuilder = $this->getFileQueryBuilder();
 
+        // @phpstan-ignore-next-line
         $fileUid = $queryBuilder
             ->select('uid')
             ->from('sys_file')
@@ -231,7 +231,8 @@ class AssetService implements SingletonInterface
      * If it has changed remotely, update local file content for a particular file UID.
      *
      * @param File $file The FAL file UID
-     * @throws FileDoesNotExistException
+     * @throws FileIsNotAnAssetException
+     * @throws AssetDoesNotExistException
      */
     public function updateLocalAsset(File $file): void
     {

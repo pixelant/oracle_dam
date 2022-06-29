@@ -122,6 +122,7 @@ class AssetListModuleController
      *
      * @param ServerRequestInterface $request
      * @return ResponseInterface
+     * @throws MissingParameterException
      */
     public function updateFileAction(ServerRequestInterface $request): ResponseInterface
     {
