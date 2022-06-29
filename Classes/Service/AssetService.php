@@ -216,7 +216,7 @@ class AssetService implements SingletonInterface
         }
 
         $this->metadataRepository->update(
-            $file->getMetaData()->offsetGet('uid'),
+            (int)$file->getMetaData()->offsetGet('uid'),
             [
                 'title' => $assetInfo['title'],
                 'caption' => $assetInfo['caption'],
