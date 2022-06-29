@@ -40,6 +40,15 @@
 			<trans-unit id="module.list.filename">
 				<source>Filename</source>
 			</trans-unit>
+			<trans-unit id="module.list.version">
+				<source>Version</source>
+			</trans-unit>
+			<trans-unit id="module.list.version.checkedRecently">
+				<source>Checked recently</source>
+			</trans-unit>
+			<trans-unit id="module.list.version.notCheckedRecently">
+				<source>Not checked last 24 hours</source>
+			</trans-unit>
 			<trans-unit id="module.list.file_updated">
 				<source>File updated</source>
 			</trans-unit>
