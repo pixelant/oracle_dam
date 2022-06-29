@@ -42,8 +42,7 @@ class DownloadAssetCommand extends Command
             ->addArgument(
                 'assetId',
                 InputArgument::REQUIRED | InputArgument::IS_ARRAY,
-                'One or more IDs of assets to download from Oracle DAM.',
-                []
+                'One or more IDs of assets to download from Oracle DAM.'
             );
     }
 
