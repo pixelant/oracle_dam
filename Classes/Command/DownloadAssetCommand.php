@@ -9,6 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use TYPO3\CMS\Core\Core\Bootstrap;
 
 class DownloadAssetCommand extends Command
 {
@@ -27,6 +28,10 @@ class DownloadAssetCommand extends Command
         $this->assetService = $assetService;
     }
 
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        Bootstrap::initializeBackendAuthentication();
+    }
 
     protected function configure()
     {
@@ -37,8 +42,7 @@ class DownloadAssetCommand extends Command
             ->addArgument(
                 'assetId',
                 InputArgument::REQUIRED | InputArgument::IS_ARRAY,
-                'One or more IDs of assets to download from Oracle DAM.',
-                []
+                'One or more IDs of assets to download from Oracle DAM.'
             );
     }
 
@@ -60,5 +64,4 @@ class DownloadAssetCommand extends Command
 
         return 0;
     }
-
 }

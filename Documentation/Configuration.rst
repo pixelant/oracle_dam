@@ -52,6 +52,46 @@ Basic
 
    The channel ID to use when selecting images.
 
+.. confval:: clientId
+
+   :Required: true
+   :type: string
+   :Environment variable: APP_ORACLE_DAM_CLIENT
+   :Example: 0123456789abcdef0123456789abcdef
+
+   The client ID for the OCM OAuth client application. Used for server-side interaction with the DAM. More info in the
+   `OCM documentation <https://docs.oracle.com/en/cloud/paas/content-cloud/solutions/integrate-oracle-content-management-using-oauth.html#GUID-AC061A7E-6488-4BCB-AAB6-C9928AF23EE0>`__
+
+.. confval:: clientSecret
+
+   :Required: true
+   :type: string
+   :Environment variable: APP_ORACLE_DAM_CLIENT
+   :Example: 012345678-9abc-def0-1234-56789abcdef
+
+   The client secret for the OCM OAuth client application. Used for server-side interaction with the DAM. More info in
+   the `OCM documentation <https://docs.oracle.com/en/cloud/paas/content-cloud/solutions/integrate-oracle-content-management-using-oauth.html#GUID-AC061A7E-6488-4BCB-AAB6-C9928AF23EE0>`__
+
+.. confval:: scope
+
+   :Required: true
+   :type: string
+   :Environment variable: APP_ORACLE_DAM_SCOPE
+   :Example: 012345678-9abc-def0-1234-56789abcdef
+
+   Authentication scope for the OCM OAuth client application. A complete URL ending in "urn:opc:cec:all". A full Used for server-side interaction with the DAM. More info in
+   the `OCM documentation <https://docs.oracle.com/en/cloud/paas/content-cloud/solutions/integrate-oracle-content-management-using-oauth.html#GUID-AC061A7E-6488-4BCB-AAB6-C9928AF23EE0>`__
+
+.. confval:: tokenDomain
+
+   :Required: true
+   :type: string
+   :Environment variable: APP_ORACLE_DAM_TOKEN_DOMAIN
+   :Example: idcs-0123456789abcdef0123456789abcdef.identity.oraclecloud.com
+
+   Token endpoint domain used when the performs initial authentication,
+   retrieving the token that will be used for subsequent requests.
+
 .. _configuration-advanced:
 
 Advanced

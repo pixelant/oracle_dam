@@ -32,9 +32,18 @@ class SelectorController
     {
         $assetIds = GeneralUtility::trimExplode(',', $request->getParsedBody()['assets'], true);
 
+        $fileUids = [];
+
+        foreach ($assetIds as $assetId) {
+            $file = $this->assetService->createLocalAssetCopy($assetId);
+
+            if ($file !== null) {
+                $fileUids[] = $file->getUid();
+            }
+        }
+
         return $this->getSuccessResponse([
-            'fileUids' => [5], // Insert correct ID here.
-            'assetIds' => $assetIds, // Can be removed.
+            'fileUids' => $fileUids,
         ]);
     }
 
@@ -60,7 +69,7 @@ class SelectorController
     /**
      * Returns a success response object with message set.
      *
-     * @param string $message
+     * @param array $data
      * @return JsonResponse
      */
     protected function getSuccessResponse(array $data): JsonResponse

@@ -37,6 +37,26 @@ class ExtensionConfigurationManager implements SingletonInterface
     protected $javaScriptUiUrl;
 
     /**
+     * @var string
+     */
+    protected $clientId;
+
+    /**
+     * @var string
+     */
+    protected $clientSecret;
+
+    /**
+     * @var string
+     */
+    protected $scope;
+
+    /**
+     * @var string
+     */
+    protected $tokenDomain;
+
+    /**
      * @param ExtensionConfiguration $extensionConfiguration
      */
     public function __construct(ExtensionConfiguration $extensionConfiguration)
@@ -50,12 +70,16 @@ class ExtensionConfigurationManager implements SingletonInterface
         $this->javaScriptUiUrl = getenv('APP_ORACLE_DAM_JS_URL')
             ?: (string)$configuration['jsUiUrl']
             ?: self::JAVASCRIPT_UI_URL;
+        $this->clientId = getenv('APP_ORACLE_DAM_CLIENT') ?: (string)$configuration['clientId'];
+        $this->clientSecret = getenv('APP_ORACLE_DAM_SECRET') ?: (string)$configuration['clientSecret'];
+        $this->scope = getenv('APP_ORACLE_DAM_SCOPE') ?: (string)$configuration['scope'];
+        $this->tokenDomain = getenv('APP_ORACLE_DAM_TOKEN_DOMAIN') ?: (string)$configuration['tokenDomain'];
     }
 
     /**
      * @return string|null
      */
-    public static function getDownloadFolder(): ?string
+    public function getDownloadFolder(): ?string
     {
         return '1:user_upload/oracle';
     }
@@ -100,5 +124,37 @@ class ExtensionConfigurationManager implements SingletonInterface
     public function isConfigured(): bool
     {
         return !empty($this->oceDomain) && !empty($this->repositoryId) && !empty($this->channelId);
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientId(): string
+    {
+        return $this->clientId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientSecret(): string
+    {
+        return $this->clientSecret;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScope(): string
+    {
+        return $this->scope;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTokenDomain(): string
+    {
+        return $this->tokenDomain;
     }
 }

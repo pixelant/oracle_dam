@@ -6,9 +6,12 @@ services:
 
   Oracle\Typo3Dam\:
     resource: '../Classes/*'
-    exclude: '../Classes/Domain/Model/*'
+    exclude: '../Classes/Api/*'
 
   Oracle\Typo3Dam\Controller\SelectorController:
+    public: true
+
+  Oracle\Typo3Dam\Service\AssetService:
     public: true
 
   Oracle\Typo3Dam\Command\DownloadAssetCommand:
