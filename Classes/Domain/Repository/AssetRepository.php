@@ -64,7 +64,7 @@ class AssetRepository extends AbstractOracleDamRepository
      *
      * @return string
      */
-    public function downloadByUrl(string $url)
+    public function downloadByUrl(string $url): string
     {
         return $this->api->getAuthenticatedUrl($url);
     }

@@ -71,7 +71,7 @@ class OracleApi
      *
      * @return Client
      */
-    protected function getClient()
+    protected function getClient(): Client
     {
         if (!($this->client instanceof Client)) {
             $reauth_client  = new Client([
@@ -99,7 +99,7 @@ class OracleApi
     /**
      * @return ContentDeliveryController
      */
-    public function content()
+    public function content(): ContentDeliveryController
     {
         if ($this->contentDeliveryController === null) {
             $this->contentDeliveryController = new ContentDeliveryController($this->getClient());
@@ -113,7 +113,7 @@ class OracleApi
      *
      * @return string
      */
-    public function getAuthenticatedUrl(string $url)
+    public function getAuthenticatedUrl(string $url): string
     {
         $response = $this->getClient()->request('GET', $url);
 

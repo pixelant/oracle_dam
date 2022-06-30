@@ -81,6 +81,7 @@ class AssetService implements SingletonInterface
      * @param string $id
      *
      * @return File The local file representation
+     * @throws AssetDoesNotExistException
      */
     public function createLocalAssetCopy(string $id): ?File
     {
@@ -89,7 +90,15 @@ class AssetService implements SingletonInterface
             return $file;
         }
 
-        $assetInfo = $this->assetRepository->findById($id) ?? null;
+        $assetInfo = $this->assetRepository->findById($id);
+
+        if ($assetInfo === null) {
+            throw new AssetDoesNotExistException(
+                'The asset with ID ' . $id . ' does not exist or is not accessible in the DAM.',
+                1656571699018
+            );
+        }
+
         $assetData = $this->assetRepository->downloadByUrl($assetInfo['url']);
 
         try {

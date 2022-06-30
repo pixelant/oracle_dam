@@ -214,7 +214,7 @@ class AssetListModuleController
      * @param string $header
      * @param int $severity
      */
-    protected function addFlashMessage(string $message, string $header, int $severity = FlashMessage::OK)
+    protected function addFlashMessage(string $message, string $header, int $severity = FlashMessage::OK): void
     {
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
         $messageQueue = $flashMessageService->getMessageQueueByIdentifier();

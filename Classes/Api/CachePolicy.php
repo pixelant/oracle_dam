@@ -11,10 +11,14 @@ class CachePolicy
     public const EVERYTHING = 1;
     public const TOKEN_ONLY = 2;
 
-    /** @var int */
+    /**
+     * @var int
+     */
     protected $cacheType;
 
-    /** @var int */
+    /**
+     * @var int
+     */
     protected $lifetime;
 
     /**
