@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace Oracle\Typo3Dam\Service;
 
+use GuzzleHttp\Exception\ClientException;
 use Oracle\Typo3Dam\Configuration\ExtensionConfigurationManager;
 use Oracle\Typo3Dam\Domain\Repository\AssetRepository;
 use Oracle\Typo3Dam\Domain\Repository\SysFileMetadataRepository;
 use Oracle\Typo3Dam\Domain\Repository\SysFileRepository;
 use Oracle\Typo3Dam\Service\Exception\AssetDoesNotExistException;
 use Oracle\Typo3Dam\Service\Exception\FileIsNotAnAssetException;
+use Oracle\Typo3Dam\Service\Exception\LocalAssetCopyCreationException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -242,6 +245,7 @@ class AssetService implements SingletonInterface
      * @param File $file The FAL file UID
      * @throws FileIsNotAnAssetException
      * @throws AssetDoesNotExistException
+     * @throws LocalAssetCopyCreationException
      */
     public function updateLocalAsset(File $file): void
     {
@@ -270,9 +274,22 @@ class AssetService implements SingletonInterface
 
         $temporaryFileName = GeneralUtility::tempnam('oracle_dam');
 
-        $newContent = $this->assetRepository->downloadByUrl($assetInfo['url']);
+        try {
+            $newContent = $this->assetRepository->downloadByUrl($assetInfo['url']);
+        } catch (ClientException $exception) {
+            throw new LocalAssetCopyCreationException(
+                'Error when downloading asset ' . $assetId . ': ' . $exception->getMessage()
+                . ' (' . $exception->getCode() . ')',
+                1656577056266
+            );
+        }
 
-        file_put_contents($temporaryFileName, $newContent);
+        if (file_put_contents($temporaryFileName, $newContent) === false) {
+            throw new LocalAssetCopyCreationException(
+                'Could not write asset  ' . $assetId . ' to temporary file ' . $temporaryFileName,
+                1656577156792
+            );
+        }
 
         $file->getStorage()->replaceFile($file, $temporaryFileName);
 
