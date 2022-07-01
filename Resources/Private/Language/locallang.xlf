@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="selector-button-control.label">
-				<source>Select from Oracle DAM</source>
+				<source>Add from Oracle</source>
 			</trans-unit>
 			<trans-unit id="selector-button-control.title">
 				<source>Select media asset from Oracle DAM</source>
