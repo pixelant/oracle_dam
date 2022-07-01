@@ -1,7 +1,7 @@
 <?php
 // phpcs:ignoreFile
 
-$EM_CONF['tea'] = [
+$EM_CONF['oracle_dam'] = [
     'title' => 'Oracle Content Management DAM',
     'description' => 'Select and import assets from the Oracle Content Management (OCM) Digital Asset Management (DAM) system.',
     'version' => '1.0.0',
