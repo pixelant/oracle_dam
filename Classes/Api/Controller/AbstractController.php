@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oracle\Typo3Dam\Api\Controller;
 
 use GuzzleHttp\Client;

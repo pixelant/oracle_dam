@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oracle\Typo3Dam\Api\Controller;
 
 class ContentDeliveryController extends AbstractController
@@ -9,7 +11,7 @@ class ContentDeliveryController extends AbstractController
      *
      * @return array
      */
-    public function retrieveContent(string $id)
+    public function retrieveContent(string $id): array
     {
         return $this->getContentItem($id);
     }
