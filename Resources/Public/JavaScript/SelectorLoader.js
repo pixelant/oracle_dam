@@ -138,6 +138,12 @@ define([
             return;
           }
 
+          if (data.errors.length > 0) {
+            for (let i = 0; i < data.errors.length; i++) {
+              self.displayError(data.errors[i]);
+            }
+          }
+
           for (let i = 0; i < data.fileUids.length; i++) {
             MessageUtility.MessageUtility.send({
               actionName: 'typo3:foreignRelation:insert',
