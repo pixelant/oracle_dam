@@ -79,15 +79,21 @@ class OracleApi
             $authorizationClient  = new Client([
                 'base_uri' => $this->tokenUrl . '/oauth2/v1/token',
             ]);
+
             $authorizationConfiguration = [
                 'client_id' => $this->clientId,
                 'client_secret' => $this->clientSecret,
                 'scope' => $this->scope,
             ];
+
             $grantType = new ClientCredentials($authorizationClient, $authorizationConfiguration);
+
             $oauth = new OAuth2Middleware($grantType);
+
             $stack = HandlerStack::create();
+
             $stack->push($oauth);
+
             $this->client = new Client([
                 'base_uri' => $this->url,
                 'handler' => $stack,
