@@ -74,16 +74,16 @@ class OracleApi
     protected function getClient(): Client
     {
         if (!($this->client instanceof Client)) {
-            $reauth_client  = new Client([
+            $authorizationClient  = new Client([
                 'base_uri' => $this->tokenUrl . '/oauth2/v1/token',
             ]);
-            $reauth_config = [
+            $authorizationConfiguration = [
                 'client_id' => $this->clientId,
                 'client_secret' => $this->clientSecret,
                 'scope' => $this->scope,
             ];
-            $grant_type = new ClientCredentials($reauth_client, $reauth_config);
-            $oauth = new OAuth2Middleware($grant_type);
+            $grantType = new ClientCredentials($authorizationClient, $authorizationConfiguration);
+            $oauth = new OAuth2Middleware($grantType);
             $stack = HandlerStack::create();
             $stack->push($oauth);
             $this->client = new Client([
