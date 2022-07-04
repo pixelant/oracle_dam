@@ -20,16 +20,4 @@ abstract class AbstractController
     {
         $this->client = $client;
     }
-
-    /**
-     * @param string $id
-     *
-     * @return array
-     */
-    protected function getContentItem(string $id): array
-    {
-        $response = $this->client->request('GET', '/content/management/api/v1.1/items/' . $id);
-
-        return json_decode($response->getBody()->getContents(), true);
-    }
 }

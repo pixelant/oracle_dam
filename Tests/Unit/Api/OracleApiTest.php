@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Oracle\Typo3Dam\Tests\Unit\Api;
 
-use Oracle\Typo3Dam\Api\Controller\ContentDeliveryController;
+use Oracle\Typo3Dam\Api\Controller\ContentManagementController;
 use Oracle\Typo3Dam\Api\OracleApi;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -24,18 +24,18 @@ class OracleApiTest extends UnitTestCase
      */
     public function contentReturnsCorrectClass(): void
     {
-        $content = $this->subject->content();
+        $content = $this->subject->contentManagement();
 
         self::assertInstanceOf(
-            ContentDeliveryController::class,
+            ContentManagementController::class,
             $content,
-            'content() returns instanceof ' . ContentDeliveryController::class
+            'content() returns instanceof ' . ContentManagementController::class
         );
 
         self::assertEquals(
             $content,
-            $this->subject->content(),
-            'content() returns same instance of ' . ContentDeliveryController::class
+            $this->subject->contentManagement(),
+            'content() returns same instance of ' . ContentManagementController::class
         );
     }
 }

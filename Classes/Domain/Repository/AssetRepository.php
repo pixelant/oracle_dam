@@ -25,7 +25,7 @@ class AssetRepository extends AbstractOracleDamRepository
         }
 
         try {
-            $data = $this->api->content()->retrieveContent($id);
+            $data = $this->api->contentManagement()->getItem($id);
         } catch (ClientException $exception) {
             if ($exception->getCode() === 404) {
                 self::$assetCache[$id] = null;

@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
-use Oracle\Typo3Dam\Api\Controller\ContentDeliveryController;
+use Oracle\Typo3Dam\Api\Controller\ContentManagementController;
 
 class OracleApi
 {
@@ -43,9 +43,9 @@ class OracleApi
     protected $clientSecret;
 
     /**
-     * @var ContentDeliveryController
+     * @var ContentManagementController
      */
-    protected $contentDeliveryController;
+    protected $contentManagementController;
 
     /**
      * @var CachePolicy
@@ -105,15 +105,15 @@ class OracleApi
     }
 
     /**
-     * @return ContentDeliveryController
+     * @return ContentManagementController
      */
-    public function content(): ContentDeliveryController
+    public function contentManagement(): ContentManagementController
     {
-        if ($this->contentDeliveryController === null) {
-            $this->contentDeliveryController = new ContentDeliveryController($this->getClient());
+        if ($this->contentManagementController === null) {
+            $this->contentManagementController = new ContentManagementController($this->getClient());
         }
 
-        return $this->contentDeliveryController;
+        return $this->contentManagementController;
     }
 
     /**
