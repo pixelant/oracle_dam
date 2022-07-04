@@ -62,18 +62,59 @@ class ExtensionConfigurationManager implements SingletonInterface
     public function __construct(ExtensionConfiguration $extensionConfiguration)
     {
         $this->extensionConfiguration = $extensionConfiguration;
-        $configuration = $this->extensionConfiguration->get('oracle_dam');
 
-        $this->oceDomain = getenv('APP_ORACLE_DAM_DOMAIN') ?: (string)$configuration['oceDomain'];
-        $this->repositoryId = getenv('APP_ORACLE_DAM_REPOSITORY') ?: (string)$configuration['repositoryId'];
-        $this->channelId = getenv('APP_ORACLE_DAM_CHANNEL') ?: (string)$configuration['channelId'];
-        $this->javaScriptUiUrl = getenv('APP_ORACLE_DAM_JS_URL')
-            ?: (string)$configuration['jsUiUrl']
-            ?: self::JAVASCRIPT_UI_URL;
-        $this->clientId = getenv('APP_ORACLE_DAM_CLIENT') ?: (string)$configuration['clientId'];
-        $this->clientSecret = getenv('APP_ORACLE_DAM_SECRET') ?: (string)$configuration['clientSecret'];
-        $this->scope = getenv('APP_ORACLE_DAM_SCOPE') ?: (string)$configuration['scope'];
-        $this->tokenDomain = getenv('APP_ORACLE_DAM_TOKEN_DOMAIN') ?: (string)$configuration['tokenDomain'];
+        $this->oceDomain = $this->getFromEnvironmentOrExtensionConfiguration(
+            'APP_ORACLE_DAM_DOMAIN',
+            'oceDomain'
+        );
+
+        $this->repositoryId = $this->getFromEnvironmentOrExtensionConfiguration(
+            'APP_ORACLE_DAM_REPOSITORY',
+            'repositoryId'
+        );
+
+        $this->channelId = $this->getFromEnvironmentOrExtensionConfiguration(
+            'APP_ORACLE_DAM_CHANNEL',
+            'channelId'
+        );
+
+        $this->javaScriptUiUrl = $this->getFromEnvironmentOrExtensionConfiguration(
+            'APP_ORACLE_DAM_JS_URL',
+            'jsUiUrl'
+        ) ?: self::JAVASCRIPT_UI_URL;
+
+        $this->clientId = $this->getFromEnvironmentOrExtensionConfiguration(
+            'APP_ORACLE_DAM_CLIENT',
+            'clientId'
+        );
+
+        $this->clientSecret = $this->getFromEnvironmentOrExtensionConfiguration(
+            'APP_ORACLE_DAM_SECRET',
+            'clientSecret'
+        );
+
+        $this->scope = $this->getFromEnvironmentOrExtensionConfiguration(
+            'APP_ORACLE_DAM_SCOPE',
+            'scope'
+        );
+
+        $this->tokenDomain = $this->getFromEnvironmentOrExtensionConfiguration(
+            'APP_ORACLE_DAM_TOKEN_DOMAIN',
+            'tokenDomain'
+        );
+    }
+
+    /**
+     * @param string $environmentName
+     * @param string $extensionConfigurationName
+     * @return string
+     */
+    private function getFromEnvironmentOrExtensionConfiguration(
+        string $environmentName,
+        string $extensionConfigurationName
+    ): string {
+        return getenv($environmentName)
+            ?: (string)($this->extensionConfiguration->get('oracle_dam')[$extensionConfigurationName] ?? '');
     }
 
     /**
@@ -123,7 +164,14 @@ class ExtensionConfigurationManager implements SingletonInterface
      */
     public function isConfigured(): bool
     {
-        return !empty($this->oceDomain) && !empty($this->repositoryId) && !empty($this->channelId);
+        return !empty($this->oceDomain)
+            && !empty($this->repositoryId)
+            && !empty($this->channelId)
+            && !empty($this->clientId)
+            && !empty($this->clientSecret)
+            && !empty($this->javaScriptUiUrl)
+            && !empty($this->scope)
+            && !empty($this->tokenDomain);
     }
 
     /**
