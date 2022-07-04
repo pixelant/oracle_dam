@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Oracle\Typo3Dam\Tests\Unit\Api\Configuration;
+namespace Oracle\Typo3Dam\Tests\Unit\Configuration;
 
 use Oracle\Typo3Dam\Configuration\ExtensionConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
