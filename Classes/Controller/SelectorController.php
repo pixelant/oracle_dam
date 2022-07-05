@@ -47,6 +47,7 @@ class SelectorController
                     '{0}',
                     $assetId,
                     $this->getLanguageService()->getLL('js.modal.error.assetDoesNotExist')
+                        ?? 'js.modal.error.assetDoesNotExist'
                 );
 
                 continue;
