@@ -8,7 +8,7 @@ define([
 ], function (NProgress, Modal, Severity, MessageUtility, AjaxRequest, DocumentService) {
   'use strict';
 
-  const SelectorPlugin = function (element) {
+  var SelectorPlugin = function (element) {
     const self = this;
 
     self.irreObjectId = element.dataset.fileIrreObject;
