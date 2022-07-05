@@ -9,7 +9,7 @@ define([
   'use strict';
 
   const SelectorPlugin = function (element) {
-    const self = this;
+    var self = this;
 
     self.irreObjectId = element.dataset.fileIrreObject;
     self.allowedExtensions = element.dataset.fileAllowed.split(',');
