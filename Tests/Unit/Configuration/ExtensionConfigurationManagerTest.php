@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Oracle\Typo3Dam\Tests\Unit\Configuration;
 
 use Oracle\Typo3Dam\Configuration\ExtensionConfigurationManager;
+use Oracle\Typo3Dam\Utility\CompatibilityUtility;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -107,7 +108,7 @@ class ExtensionConfigurationManagerTest extends UnitTestCase
 
         $extensionConfiguration = new ExtensionConfiguration();
 
-        $extensionConfiguration->set('oracle_dam', $values);
+        CompatibilityUtility::setMultipleExtensionConfigurations($extensionConfiguration, 'oracle_dam', $values);
 
         $subject = new ExtensionConfigurationManager($extensionConfiguration);
 
