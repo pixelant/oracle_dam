@@ -13,7 +13,6 @@ use Oracle\Typo3Dam\Service\Exception\AssetDoesNotExistException;
 use Oracle\Typo3Dam\Service\Exception\FileIsNotAnAssetException;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 

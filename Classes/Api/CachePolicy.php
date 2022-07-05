@@ -37,7 +37,7 @@ class CachePolicy
 
     /**
      * @param $cacheType
-     * @return void
+     * @throws \OutOfRangeException
      */
     protected function setCacheType(int $cacheType): void
     {
@@ -54,7 +54,7 @@ class CachePolicy
      */
     public function isEnabled(): bool
     {
-        return self::OFF !== $this->cacheType;
+        return $this->cacheType !== self::OFF;
     }
 
     /**

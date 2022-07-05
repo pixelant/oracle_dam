@@ -162,9 +162,9 @@ class SysFileRepositoryTest extends FunctionalTestCase
     {
         $connection = $this->getConnectionPool()->getConnectionForTable('sys_file');
 
+        // @phpstan-ignore-next-line
         $recordBeforeUpdate = $connection
             ->select(['*'], SysFileRepository::TABLE_NAME, ['uid' => 1])
-            // @phpstan-ignore-next-line
             ->fetch(FetchMode::ASSOCIATIVE);
 
         $subject = new SysFileRepository();
@@ -172,12 +172,12 @@ class SysFileRepositoryTest extends FunctionalTestCase
         $newName = 'newName';
 
         $subject->update(1, [
-            'name' => $newName
+            'name' => $newName,
         ]);
 
+        // @phpstan-ignore-next-line
         $recordAfterUpdate = $connection
             ->select(['*'], SysFileRepository::TABLE_NAME, ['uid' => 1])
-            // @phpstan-ignore-next-line
             ->fetch(FetchMode::ASSOCIATIVE);
 
         self::assertIsArray($recordBeforeUpdate, '$recordBeforeUpdate is array');
