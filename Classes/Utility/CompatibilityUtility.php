@@ -72,7 +72,6 @@ class CompatibilityUtility
      * @param ExtensionConfiguration $extensionConfiguration
      * @param string $extension
      * @param array $values
-     * @return void
      */
     public static function setMultipleExtensionConfigurations(
         ExtensionConfiguration $extensionConfiguration,
