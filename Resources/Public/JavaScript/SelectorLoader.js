@@ -31,7 +31,7 @@ define([
               self.selectedAssets = [];
               self.$modal.modal('hide');
             },
-            btnClass: 'btn-default'
+            btnClass: 'btn-default',
           },
           {
             text: TYPO3.lang['oracle_dam.modal.button.use-selected'],
@@ -41,8 +41,8 @@ define([
 
               self.addAssets(self.selectedAssets);
             },
-            btnClass: 'btn-success'
-          }
+            btnClass: 'btn-success',
+          },
         ],
         callback: function (modal) {
           window.top.require([TYPO3.settings.oracle_dam.jsUiUrl], function () {
@@ -83,21 +83,15 @@ define([
                   }
 
                   $successButton.attr('disabled', false);
-                }
-              }
+                },
+              },
             );
 
             var $modalBody = $('.modal-body', modal);
 
-            $(frame)
-              .css('height', '100%')
-              .css('width', '100%');
+            $(frame).css('height', '100%').css('width', '100%');
 
-            $modalBody
-              .empty()
-              .css('padding', '0')
-              .get(0)
-              .appendChild(frame);
+            $modalBody.empty().css('padding', '0').get(0).appendChild(frame);
           });
         },
       });
@@ -119,8 +113,9 @@ define([
       }
 
       request.post({
-        assets: assetIds.join(',')
-      }).then(
+        assets: assetIds.join(','),
+      })
+        .then(
         async function (response) {
           var data = await response.resolve();
 
