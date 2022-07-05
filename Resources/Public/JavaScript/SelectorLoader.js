@@ -211,6 +211,6 @@ define([
     );
 
     // Preload dependency.
-    window.top.require([TYPO3.settings.oracle_dam.jsUiUrl]);
+    window.top.require(TYPO3.settings.oracle_dam.jsUiUrl);
   });
 });
