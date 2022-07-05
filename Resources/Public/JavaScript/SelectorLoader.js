@@ -9,7 +9,7 @@ define([
   'use strict';
 
   var SelectorPlugin = function (element) {
-    const self = this;
+    var self = this;
 
     self.irreObjectId = element.dataset.fileIrreObject;
     self.allowedExtensions = element.dataset.fileAllowed.split(',');
@@ -48,7 +48,7 @@ define([
           window.top.require([TYPO3.settings.oracle_dam.jsUiUrl], function () {
             window.top.OracleCEUI.oceUrl = 'https://' + TYPO3.settings.oracle_dam.oceDomain;
 
-            const frame = window.top.OracleCEUI.assetsView.createFrame(
+            var frame = window.top.OracleCEUI.assetsView.createFrame(
               {
                 assetsView: {
                   select: 'multiple',
@@ -87,7 +87,7 @@ define([
               }
             );
 
-            const $modalBody = $('.modal-body', modal);
+            var $modalBody = $('.modal-body', modal);
 
             $(frame)
               .css('height', '100%')
@@ -106,9 +106,9 @@ define([
     self.addAssets = function (assets) {
       NProgress.start();
 
-      const request = new AjaxRequest(TYPO3.settings.ajaxUrls['oracle_dam_download_file']);
+      var request = new AjaxRequest(TYPO3.settings.ajaxUrls['oracle_dam_download_file']);
 
-      const assetIds = [];
+      var assetIds = [];
 
       for (let asset of assets) {
         if (!self.validateAsset(asset)) {
@@ -122,7 +122,7 @@ define([
         assets: assetIds.join(',')
       }).then(
         async function (response) {
-          const data = await response.resolve();
+          var data = await response.resolve();
 
           if (response.response.status !== 200 || !data.success) {
             let errorMessage = TYPO3.lang['oracle_dam.modal.request-failed'];
@@ -184,7 +184,7 @@ define([
      * @param message The error message to display
      */
     self.displayError = function (message) {
-      const errorModal = Modal.confirm(
+      var errorModal = Modal.confirm(
         TYPO3.lang['oracle_dam.modal.error-title'],
         message,
         Severity.error,
