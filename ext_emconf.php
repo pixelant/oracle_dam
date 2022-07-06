@@ -4,7 +4,7 @@
 $EM_CONF['oracle_dam'] = [
     'title' => 'Oracle Content Management DAM',
     'description' => 'Select and import assets from the Oracle Content Management (OCM) Digital Asset Management (DAM) system.',
-    'version' => '0.1.0',
+    'version' => '0.2.0',
     'category' => 'module',
     'constraints' => [
         'depends' => [
