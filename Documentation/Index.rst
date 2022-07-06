@@ -45,6 +45,8 @@ Management (DAM) in TYPO3.
    Installation
    Configuration
    CliCommands
+   AdminModule
+   EditorsGuide
 
 .. Meta Menu
 
