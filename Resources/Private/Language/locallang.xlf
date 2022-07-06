@@ -26,6 +26,9 @@
 			<trans-unit id="js.modal.error.assetDoesNotExist">
 				<source>The asset does not exist. (Asset ID: {0})</source>
 			</trans-unit>
+			<trans-unit id="js.modal.error.insufficientFolderAccessPermissions">
+				<source>You do not have access to add files to TYPO3's Oracle DAM folder.</source>
+			</trans-unit>
 			<trans-unit id="js.modal.button.use-selected">
 				<source>Use Selected</source>
 			</trans-unit>

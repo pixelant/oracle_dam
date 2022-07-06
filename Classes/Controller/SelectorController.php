@@ -9,6 +9,7 @@ use Oracle\Typo3Dam\Service\Exception\AssetDoesNotExistException;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class SelectorController
@@ -49,6 +50,11 @@ class SelectorController
                     $this->getLanguageService()->getLL('js.modal.error.assetDoesNotExist')
                         ?? 'js.modal.error.assetDoesNotExist'
                 );
+
+                continue;
+            } catch (InsufficientFolderAccessPermissionsException $exception) {
+                $errors[] = $this->getLanguageService()->getLL('js.modal.error.insufficientFolderAccessPermissions')
+                    ?? 'js.modal.error.insufficientFolderAccessPermissions';
 
                 continue;
             }
