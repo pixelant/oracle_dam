@@ -18,21 +18,20 @@ Installation and Setup
 3. **In Oracle Identity Cloud Service:** The *Identity Domain Administrator* or
    *Application Administrator* of the Oracle Content tenant must create an
    *OAuth client*. This process results in the credentials used when
-   authenticating the TYPO3 extension. Read more in the `Oracle Content
-   Documentation <https://docs.oracle.com/en/cloud/paas/content-cloud/solutions/integrate-oracle-content-management-using-oauth.html#GUID-E082EB23-9EB1-4E6D-9996-F3CD4862D072>`.
+   authenticating the TYPO3 extension. Read more in the `Oracle Content Documentation <https://docs.oracle.com/en/cloud/paas/content-cloud/solutions/integrate-oracle-content-management-using-oauth.html#GUID-E082EB23-9EB1-4E6D-9996-F3CD4862D072>`__.
 
 4. **In Oracle Identity Cloud Service:** Add the client app to the
    *CECEnterpriseUser*, *CECRepositoryAdmin*, and *CECContentAdministrator*
    application roles.
 
-   .. image:: Images/ApplicationsAssignments.png
+   .. figure:: Images/ApplicationsAssignments.png
 
       An app has been added to the *CECContentAdministrator* role
 
 5. **In Oracle Content:** Add the client app to the repository with a *Manager*
    role.
 
-   .. image:: Images/AddRepositoryMember.png
+   .. figure:: Images/AddRepositoryMember.png
 
       The app added as a repository manager.
 
