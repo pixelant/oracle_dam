@@ -9,6 +9,7 @@ use Oracle\Typo3Dam\Controller\AssetListModuleController;
 use Oracle\Typo3Dam\Service\AssetService;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\File;
@@ -29,6 +30,8 @@ class AssetListModuleControllerTest extends UnitTestCase
             ->willReturnArgument(0);
 
         $GLOBALS['LANG'] = $languageServiceMock;
+
+        $GLOBALS['BE_USER'] = self::createMock(BackendUserAuthentication::class);
     }
 
     /**

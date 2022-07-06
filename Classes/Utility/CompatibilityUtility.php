@@ -79,9 +79,7 @@ class CompatibilityUtility
         array $values
     ): void {
         if (self::typo3VersionIsLessThan('11')) {
-            foreach ($values as $key => $value) {
-                $extensionConfiguration->set($extension, $key, $value);
-            }
+            $extensionConfiguration->set($extension, '', $values);
 
             return;
         }
