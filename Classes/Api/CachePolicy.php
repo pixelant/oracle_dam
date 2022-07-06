@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oracle\Typo3Dam\Api;
 
 /**
@@ -33,7 +35,11 @@ class CachePolicy
         $this->lifetime = $lifetime;
     }
 
-    protected function setCacheType($cacheType)
+    /**
+     * @param $cacheType
+     * @throws \OutOfRangeException
+     */
+    protected function setCacheType(int $cacheType): void
     {
         if (!in_array($cacheType, [self::OFF, self::EVERYTHING, self::TOKEN_ONLY])) {
             throw new \OutOfRangeException(
@@ -43,17 +49,26 @@ class CachePolicy
         $this->cacheType = $cacheType;
     }
 
-    public function isEnabled()
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
     {
-        return self::OFF != $this->cacheType;
+        return $this->cacheType !== self::OFF;
     }
 
-    public function getCacheType()
+    /**
+     * @return int
+     */
+    public function getCacheType(): int
     {
         return $this->cacheType;
     }
 
-    public function getLifetime()
+    /**
+     * @return int
+     */
+    public function getLifetime(): int
     {
         return $this->lifetime;
     }

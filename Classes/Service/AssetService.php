@@ -191,7 +191,7 @@ class AssetService implements SingletonInterface
             $data[SysFileRepository::FIELD_METADATA_TIMESTAMP] = time();
         }
 
-        if (null !== $assetId) {
+        if ($assetId !== null) {
             $data[SysFileRepository::FIELD_ASSET_ID] = $assetId;
         }
 

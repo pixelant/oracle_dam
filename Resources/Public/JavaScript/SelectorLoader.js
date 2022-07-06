@@ -31,7 +31,7 @@ define([
               self.selectedAssets = [];
               self.$modal.modal('hide');
             },
-            btnClass: 'btn-default'
+            btnClass: 'btn-default',
           },
           {
             text: TYPO3.lang['oracle_dam.modal.button.use-selected'],
@@ -41,8 +41,8 @@ define([
 
               self.addAssets(self.selectedAssets);
             },
-            btnClass: 'btn-success'
-          }
+            btnClass: 'btn-success',
+          },
         ],
         callback: function (modal) {
           window.top.require([TYPO3.settings.oracle_dam.jsUiUrl], function () {
@@ -83,21 +83,15 @@ define([
                   }
 
                   $successButton.attr('disabled', false);
-                }
-              }
+                },
+              },
             );
 
             const $modalBody = $('.modal-body', modal);
 
-            $(frame)
-              .css('height', '100%')
-              .css('width', '100%');
+            $(frame).css('height', '100%').css('width', '100%');
 
-            $modalBody
-              .empty()
-              .css('padding', '0')
-              .get(0)
-              .appendChild(frame);
+            $modalBody.empty().css('padding', '0').get(0).appendChild(frame);
           });
         },
       });
@@ -118,43 +112,51 @@ define([
         assetIds.push(asset.id);
       }
 
-      request.post({
-        assets: assetIds.join(',')
-      }).then(
-        async function (response) {
-          const data = await response.resolve();
+      request
+        .post({
+          assets: assetIds.join(','),
+        })
+        .then(
+          async function (response) {
+            const data = await response.resolve();
 
-          if (response.response.status !== 200 || !data.success) {
-            let errorMessage = TYPO3.lang['oracle_dam.modal.request-failed'];
+            if (response.response.status !== 200 || !data.success) {
+              let errorMessage = TYPO3.lang['oracle_dam.modal.request-failed'];
 
-            if (data.message) {
-              errorMessage = data.message;
+              if (data.message) {
+                errorMessage = data.message;
+              }
+
+              self.displayError(errorMessage);
+
+              NProgress.done();
+
+              return;
             }
 
-            self.displayError(errorMessage);
+            if (data.errors.length > 0) {
+              for (let i = 0; i < data.errors.length; i++) {
+                self.displayError(data.errors[i]);
+              }
+            }
+
+            for (let i = 0; i < data.fileUids.length; i++) {
+              MessageUtility.MessageUtility.send({
+                actionName: 'typo3:foreignRelation:insert',
+                objectGroup: self.irreObjectId,
+                table: 'sys_file',
+                uid: data.fileUids[i],
+              });
+            }
 
             NProgress.done();
+          },
+          function (error) {
+            self.displayError(TYPO3.lang['oracle_dam.modal.request-failed'] + error.status + ' ' + error.statusText);
 
-            return;
-          }
-
-          for (let i = 0; i < data.fileUids.length; i++) {
-            MessageUtility.MessageUtility.send({
-              actionName: 'typo3:foreignRelation:insert',
-              objectGroup: self.irreObjectId,
-              table: 'sys_file',
-              uid: data.fileUids[i]
-            });
-          }
-
-          NProgress.done();
-        },
-        function (error) {
-          self.displayError(TYPO3.lang['oracle_dam.modal.request-failed'] + error.status + ' ' + error.statusText);
-
-          NProgress.done();
-        }
-      );
+            NProgress.done();
+          },
+        );
     };
 
     /**
@@ -170,7 +172,7 @@ define([
       }
 
       return true;
-    }
+    };
 
     /**
      * Displays an error message in a modal.
@@ -178,17 +180,14 @@ define([
      * @param message The error message to display
      */
     self.displayError = function (message) {
-      const errorModal = Modal.confirm(
-        TYPO3.lang['oracle_dam.modal.error-title'],
-        message,
-        Severity.error,
-        [{
+      const errorModal = Modal.confirm(TYPO3.lang['oracle_dam.modal.error-title'], message, Severity.error, [
+        {
           text: TYPO3.lang['button.ok'] || 'OK',
           btnClass: 'btn-' + Severity.getCssClass(Severity.error),
           name: 'ok',
           active: true,
-        }]
-      ).on('confirm.button.ok', function () {
+        },
+      ]).on('confirm.button.ok', function () {
         errorModal.modal('hide');
       });
     };
@@ -206,10 +205,10 @@ define([
 
         new SelectorPlugin(event.target).openModal();
       },
-      false
+      false,
     );
 
     // Preload dependency.
-    window.top.require([TYPO3.settings.oracle_dam.jsUiUrl]);
+    window.top.require(TYPO3.settings.oracle_dam.jsUiUrl);
   });
 });

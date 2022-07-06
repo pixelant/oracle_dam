@@ -78,7 +78,7 @@ jobs:
       fail-fast: false
       matrix:
         command:
-          - "style"
+          #- "style"
           - "js"
     steps:
       - name: "Checkout"

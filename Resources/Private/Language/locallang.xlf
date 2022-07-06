@@ -23,6 +23,9 @@
 			<trans-unit id="js.modal.illegal-extension">
 				<source>The file extension "{0}" is not allowed here.</source>
 			</trans-unit>
+			<trans-unit id="js.modal.error.assetDoesNotExist">
+				<source>The asset does not exist. (Asset ID: {0})</source>
+			</trans-unit>
 			<trans-unit id="js.modal.button.use-selected">
 				<source>Use Selected</source>
 			</trans-unit>

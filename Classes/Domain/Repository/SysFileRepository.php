@@ -34,6 +34,7 @@ class SysFileRepository extends AbstractLocalRepository
             ->select('*')
             ->from(self::TABLE_NAME)
             ->where(
+                $queryBuilder->expr()->isNotNull(self::FIELD_ASSET_ID),
                 $queryBuilder->expr()->eq(
                     'uid',
                     $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
@@ -92,7 +93,8 @@ class SysFileRepository extends AbstractLocalRepository
                 $queryBuilder->expr()->eq('f.uid', $queryBuilder->quoteIdentifier('m.file'))
             )
             ->where(
-                $queryBuilder->expr()->isNotNull(self::FIELD_ASSET_ID)
+                $queryBuilder->expr()->isNotNull(self::FIELD_ASSET_ID),
+                $queryBuilder->expr()->eq('m.sys_language_uid', 0)
             )
             ->orderBy('name')
             ->execute();

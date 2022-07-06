@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oracle\Typo3Dam\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
-use Oracle\Typo3Dam\Api\Controller\ContentDeliveryController;
+use Oracle\Typo3Dam\Api\Controller\ContentManagementController;
 
 class OracleApi
 {
@@ -41,9 +43,9 @@ class OracleApi
     protected $clientSecret;
 
     /**
-     * @var ContentDeliveryController
+     * @var ContentManagementController
      */
-    protected $contentDeliveryController;
+    protected $contentManagementController;
 
     /**
      * @var CachePolicy
@@ -74,18 +76,24 @@ class OracleApi
     protected function getClient(): Client
     {
         if (!($this->client instanceof Client)) {
-            $reauth_client  = new Client([
+            $authorizationClient  = new Client([
                 'base_uri' => $this->tokenUrl . '/oauth2/v1/token',
             ]);
-            $reauth_config = [
+
+            $authorizationConfiguration = [
                 'client_id' => $this->clientId,
                 'client_secret' => $this->clientSecret,
                 'scope' => $this->scope,
             ];
-            $grant_type = new ClientCredentials($reauth_client, $reauth_config);
-            $oauth = new OAuth2Middleware($grant_type);
+
+            $grantType = new ClientCredentials($authorizationClient, $authorizationConfiguration);
+
+            $oauth = new OAuth2Middleware($grantType);
+
             $stack = HandlerStack::create();
+
             $stack->push($oauth);
+
             $this->client = new Client([
                 'base_uri' => $this->url,
                 'handler' => $stack,
@@ -97,15 +105,15 @@ class OracleApi
     }
 
     /**
-     * @return ContentDeliveryController
+     * @return ContentManagementController
      */
-    public function content(): ContentDeliveryController
+    public function contentManagement(): ContentManagementController
     {
-        if ($this->contentDeliveryController === null) {
-            $this->contentDeliveryController = new ContentDeliveryController($this->getClient());
+        if ($this->contentManagementController === null) {
+            $this->contentManagementController = new ContentManagementController($this->getClient());
         }
 
-        return $this->contentDeliveryController;
+        return $this->contentManagementController;
     }
 
     /**

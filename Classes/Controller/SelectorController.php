@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Oracle\Typo3Dam\Controller;
 
 use Oracle\Typo3Dam\Service\AssetService;
+use Oracle\Typo3Dam\Service\Exception\AssetDoesNotExistException;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class SelectorController
@@ -22,6 +24,8 @@ class SelectorController
     public function __construct(AssetService $assetService)
     {
         $this->assetService = $assetService;
+
+        $this->getLanguageService()->includeLLFile('EXT:oracle_dam/Resources/Private/Language/locallang.xlf');
     }
 
     /**
@@ -33,9 +37,21 @@ class SelectorController
         $assetIds = GeneralUtility::trimExplode(',', $request->getParsedBody()['assets'], true);
 
         $fileUids = [];
+        $errors = [];
 
         foreach ($assetIds as $assetId) {
-            $file = $this->assetService->createLocalAssetCopy($assetId);
+            try {
+                $file = $this->assetService->createLocalAssetCopy($assetId);
+            } catch (AssetDoesNotExistException $exception) {
+                $errors[] = str_replace(
+                    '{0}',
+                    $assetId,
+                    $this->getLanguageService()->getLL('js.modal.error.assetDoesNotExist')
+                        ?? 'js.modal.error.assetDoesNotExist'
+                );
+
+                continue;
+            }
 
             if ($file !== null) {
                 $fileUids[] = $file->getUid();
@@ -44,6 +60,7 @@ class SelectorController
 
         return $this->getSuccessResponse([
             'fileUids' => $fileUids,
+            'errors' => $errors,
         ]);
     }
 
@@ -79,5 +96,13 @@ class SelectorController
         return GeneralUtility::makeInstance(JsonResponse::class)
             ->withStatus(200)
             ->setPayload($data);
+    }
+
+    /**
+     * @return LanguageService
+     */
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }
