@@ -20,17 +20,12 @@ class OracleApi
     /**
      * @var string
      */
-    protected $url;
+    protected $oceDomain;
 
     /**
      * @var string
      */
-    protected $tokenUrl;
-
-    /**
-     * @var string
-     */
-    protected $scope;
+    protected $tokenDomain;
 
     /**
      * @var string
@@ -53,17 +48,15 @@ class OracleApi
     protected $cachePolicy;
 
     /**
-     * @param string $url
-     * @param string $tokenUrl
-     * @param string $scope
+     * @param string $oceDomain
+     * @param string $tokenDomain
      * @param string $clientId
      * @param string $clientSecret
      */
-    public function __construct(string $url, string $tokenUrl, string $scope, string $clientId, string $clientSecret)
+    public function __construct(string $oceDomain, string $tokenDomain, string $clientId, string $clientSecret)
     {
-        $this->url = $url;
-        $this->tokenUrl = $tokenUrl;
-        $this->scope = $scope;
+        $this->oceDomain = $oceDomain;
+        $this->tokenDomain = $tokenDomain;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
     }
@@ -77,13 +70,13 @@ class OracleApi
     {
         if (!($this->client instanceof Client)) {
             $authorizationClient  = new Client([
-                'base_uri' => $this->tokenUrl . '/oauth2/v1/token',
+                'base_uri' => 'https://' . $this->tokenDomain . '/oauth2/v1/token'
             ]);
 
             $authorizationConfiguration = [
                 'client_id' => $this->clientId,
                 'client_secret' => $this->clientSecret,
-                'scope' => $this->scope,
+                'scope' => 'https://' . $this->oceDomain . ':443/urn:opc:cec:all',
             ];
 
             $grantType = new ClientCredentials($authorizationClient, $authorizationConfiguration);
@@ -95,7 +88,7 @@ class OracleApi
             $stack->push($oauth);
 
             $this->client = new Client([
-                'base_uri' => $this->url,
+                'base_uri' => 'https://' . $this->oceDomain,
                 'handler' => $stack,
                 'auth' => 'oauth',
             ]);

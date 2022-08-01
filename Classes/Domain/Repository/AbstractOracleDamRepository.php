@@ -30,9 +30,8 @@ abstract class AbstractOracleDamRepository implements SingletonInterface
     protected function getOracleApi(ExtensionConfigurationManager $configuration): OracleApi
     {
         return new OracleApi(
-            'https://' . $configuration->getOceDomain(),
-            'https://' . $configuration->getTokenDomain(),
-            $configuration->getScope(),
+            $configuration->getOceDomain(),
+            $configuration->getTokenDomain(),
             $configuration->getClientId(),
             $configuration->getClientSecret()
         );
