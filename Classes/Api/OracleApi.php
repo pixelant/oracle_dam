@@ -48,17 +48,42 @@ class OracleApi
     protected $cachePolicy;
 
     /**
+     * @var string|null
+     */
+    protected $scopeDomain;
+
+    /**
      * @param string $oceDomain
      * @param string $tokenDomain
      * @param string $clientId
      * @param string $clientSecret
+     * @param string|null $scopeDomain
      */
-    public function __construct(string $oceDomain, string $tokenDomain, string $clientId, string $clientSecret)
-    {
+    public function __construct(
+        string $oceDomain,
+        string $tokenDomain,
+        string $clientId,
+        string $clientSecret,
+        ?string $scopeDomain = null
+    ) {
         $this->oceDomain = $oceDomain;
         $this->tokenDomain = $tokenDomain;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
+        $this->scopeDomain = $scopeDomain ?? $this->resolveScopeDomain();
+    }
+
+    /**
+     * Returns the scope domain.
+     *
+     * This is the CNAME to which the oceDomain points. If no CNAME record exists, the oceDomain is returned, as it
+     * logically follows that a domain without CNAME record cannot be resolved further and must be the scope domain.
+     *
+     * @return string
+     */
+    private function resolveScopeDomain(): string
+    {
+        return dns_get_record($this->oceDomain, DNS_CNAME)[0]['target'] ?? $this->oceDomain;
     }
 
     /**
@@ -76,7 +101,7 @@ class OracleApi
             $authorizationConfiguration = [
                 'client_id' => $this->clientId,
                 'client_secret' => $this->clientSecret,
-                'scope' => 'https://' . $this->oceDomain . ':443/urn:opc:cec:all',
+                'scope' => 'https://' . $this->scopeDomain . ':443/urn:opc:cec:all',
             ];
 
             $grantType = new ClientCredentials($authorizationClient, $authorizationConfiguration);

@@ -95,3 +95,15 @@ Advanced
    :Default: https://static.ocecdn.oraclecloud.com/cdn/cec/api/oracle-ce-ui-2.11.js
 
    The URL to the JavaScript file for the image selector UI.
+
+.. confval:: scopeDomain
+
+   :Required: false
+   :type: string
+   :Environment variable: APP_ORACLE_DAM_SCOPE
+   :Example: 0123456789abcdef0123456789abcdef.cec.ocp.oraclecloud.com
+
+   Usually resolved automatically, as it is the hostname that the
+   :ref:`oceDomain` CNAME record is pointing to. This property is used for
+   server-side OAuth authentication when interacting with the DAM. More info in
+   the `OCM documentation <https://docs.oracle.com/en/cloud/paas/content-cloud/solutions/integrate-oracle-content-management-using-oauth.html#GUID-AC061A7E-6488-4BCB-AAB6-C9928AF23EE0>`__

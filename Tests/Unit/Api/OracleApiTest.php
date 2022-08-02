@@ -16,7 +16,7 @@ class OracleApiTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->subject = new OracleApi('url', 'tokenUrl', 'scope', 'clientId', 'clientSecret');
+        $this->subject = new OracleApi('url', 'tokenUrl', 'scope', 'clientId', null, 'clientSecret');
     }
 
     /**

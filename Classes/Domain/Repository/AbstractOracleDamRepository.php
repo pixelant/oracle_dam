@@ -33,7 +33,8 @@ abstract class AbstractOracleDamRepository implements SingletonInterface
             $configuration->getOceDomain(),
             $configuration->getTokenDomain(),
             $configuration->getClientId(),
-            $configuration->getClientSecret()
+            $configuration->getClientSecret(),
+            $configuration->getScopeDomain()
         );
     }
 }
