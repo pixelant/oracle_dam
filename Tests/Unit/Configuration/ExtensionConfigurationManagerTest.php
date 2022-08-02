@@ -173,7 +173,6 @@ class ExtensionConfigurationManagerTest extends UnitTestCase
             'APP_ORACLE_DAM_JS_URL' => 'theJsUrlFromEnvironment',
             'APP_ORACLE_DAM_CLIENT' => 'theClientFromEnvironment',
             'APP_ORACLE_DAM_SECRET' => 'theSecretFromEnvironment',
-            'APP_ORACLE_DAM_SCOPE' => 'theScopeFromEnvironment',
             'APP_ORACLE_DAM_TOKEN_DOMAIN' => 'theTokenDomainFromEnvironment',
         ];
 
