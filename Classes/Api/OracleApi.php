@@ -95,7 +95,7 @@ class OracleApi
     {
         if (!($this->client instanceof Client)) {
             $authorizationClient  = new Client([
-                'base_uri' => 'https://' . $this->tokenDomain . '/oauth2/v1/token'
+                'base_uri' => 'https://' . $this->tokenDomain . '/oauth2/v1/token',
             ]);
 
             $authorizationConfiguration = [
