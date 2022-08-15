@@ -73,8 +73,8 @@ class ExtensionConfigurationManagerTest extends UnitTestCase
 
         self::assertEquals(
             $values['APP_ORACLE_DAM_SCOPE'],
-            $subject->getScope(),
-            'getScope() returns value of environment variable APP_ORACLE_DAM_SCOPE'
+            $subject->getScopeDomain(),
+            'getScopeDomain() returns value of environment variable APP_ORACLE_DAM_SCOPE'
         );
 
         self::assertEquals(
@@ -100,7 +100,7 @@ class ExtensionConfigurationManagerTest extends UnitTestCase
             'jsUiUrl' => 'theJsUrlFromExtensionConfig',
             'clientId' => 'theClientFromExtensionConfig',
             'clientSecret' => 'theSecretFromExtensionConfig',
-            'scope' => 'theScopeFromExtensionConfig',
+            'scopeDomain' => 'theScopeFromExtensionConfig',
             'tokenDomain' => 'theTokenDomainFromExtensionConfig',
         ];
 
@@ -149,9 +149,9 @@ class ExtensionConfigurationManagerTest extends UnitTestCase
         );
 
         self::assertEquals(
-            $values['scope'],
-            $subject->getScope(),
-            'getScope() returns value of extension configuration property scope'
+            $values['scopeDomain'],
+            $subject->getScopeDomain(),
+            'getScopeDomain() returns value of extension configuration property scopeDomain'
         );
 
         self::assertEquals(
@@ -173,7 +173,6 @@ class ExtensionConfigurationManagerTest extends UnitTestCase
             'APP_ORACLE_DAM_JS_URL' => 'theJsUrlFromEnvironment',
             'APP_ORACLE_DAM_CLIENT' => 'theClientFromEnvironment',
             'APP_ORACLE_DAM_SECRET' => 'theSecretFromEnvironment',
-            'APP_ORACLE_DAM_SCOPE' => 'theScopeFromEnvironment',
             'APP_ORACLE_DAM_TOKEN_DOMAIN' => 'theTokenDomainFromEnvironment',
         ];
 

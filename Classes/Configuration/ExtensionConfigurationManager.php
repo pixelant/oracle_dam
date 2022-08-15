@@ -47,7 +47,7 @@ class ExtensionConfigurationManager implements SingletonInterface
     protected $clientSecret;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $scope;
 
@@ -93,15 +93,15 @@ class ExtensionConfigurationManager implements SingletonInterface
             'clientSecret'
         );
 
-        $this->scope = $this->getFromEnvironmentOrExtensionConfiguration(
-            'APP_ORACLE_DAM_SCOPE',
-            'scope'
-        );
-
         $this->tokenDomain = $this->getFromEnvironmentOrExtensionConfiguration(
             'APP_ORACLE_DAM_TOKEN_DOMAIN',
             'tokenDomain'
         );
+
+        $this->scope = $this->getFromEnvironmentOrExtensionConfiguration(
+            'APP_ORACLE_DAM_SCOPE',
+            'scopeDomain'
+        ) ?: null;
     }
 
     /**
@@ -170,7 +170,6 @@ class ExtensionConfigurationManager implements SingletonInterface
             && !empty($this->clientId)
             && !empty($this->clientSecret)
             && !empty($this->javaScriptUiUrl)
-            && !empty($this->scope)
             && !empty($this->tokenDomain);
     }
 
@@ -193,7 +192,7 @@ class ExtensionConfigurationManager implements SingletonInterface
     /**
      * @return string
      */
-    public function getScope(): string
+    public function getScopeDomain(): ?string
     {
         return $this->scope;
     }
