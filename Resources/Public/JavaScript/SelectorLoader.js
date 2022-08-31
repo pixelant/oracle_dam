@@ -57,7 +57,7 @@ define([
                       capsules: false,
                       relatedKeywords: true,
                     },
-                    repositories: ['none'],
+                    repositories: [TYPO3.settings.oracle_dam.repositoryId],
                     channels: [TYPO3.settings.oracle_dam.channelId],
                     mediaGroups: ['images'],
                     assetStatus: ['published'],
