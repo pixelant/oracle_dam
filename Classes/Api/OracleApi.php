@@ -20,12 +20,17 @@ class OracleApi
     /**
      * @var string
      */
-    protected $oceDomain;
+    protected $url;
 
     /**
      * @var string
      */
-    protected $tokenDomain;
+    protected $tokenUrl;
+
+    /**
+     * @var string
+     */
+    protected $scope;
 
     /**
      * @var string
@@ -48,42 +53,19 @@ class OracleApi
     protected $cachePolicy;
 
     /**
-     * @var string|null
-     */
-    protected $scopeDomain;
-
-    /**
-     * @param string $oceDomain
-     * @param string $tokenDomain
+     * @param string $url
+     * @param string $tokenUrl
+     * @param string $scope
      * @param string $clientId
      * @param string $clientSecret
-     * @param string|null $scopeDomain
      */
-    public function __construct(
-        string $oceDomain,
-        string $tokenDomain,
-        string $clientId,
-        string $clientSecret,
-        ?string $scopeDomain = null
-    ) {
-        $this->oceDomain = $oceDomain;
-        $this->tokenDomain = $tokenDomain;
+    public function __construct(string $url, string $tokenUrl, string $scope, string $clientId, string $clientSecret)
+    {
+        $this->url = $url;
+        $this->tokenUrl = $tokenUrl;
+        $this->scope = $scope;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
-        $this->scopeDomain = $scopeDomain ?? $this->resolveScopeDomain();
-    }
-
-    /**
-     * Returns the scope domain.
-     *
-     * This is the CNAME to which the oceDomain points. If no CNAME record exists, the oceDomain is returned, as it
-     * logically follows that a domain without CNAME record cannot be resolved further and must be the scope domain.
-     *
-     * @return string
-     */
-    private function resolveScopeDomain(): string
-    {
-        return dns_get_record($this->oceDomain, DNS_CNAME)[0]['target'] ?? $this->oceDomain;
     }
 
     /**
@@ -95,13 +77,13 @@ class OracleApi
     {
         if (!($this->client instanceof Client)) {
             $authorizationClient  = new Client([
-                'base_uri' => 'https://' . $this->tokenDomain . '/oauth2/v1/token',
+                'base_uri' => $this->tokenUrl . '/oauth2/v1/token',
             ]);
 
             $authorizationConfiguration = [
                 'client_id' => $this->clientId,
                 'client_secret' => $this->clientSecret,
-                'scope' => 'https://' . $this->scopeDomain . ':443/urn:opc:cec:all',
+                'scope' => $this->scope,
             ];
 
             $grantType = new ClientCredentials($authorizationClient, $authorizationConfiguration);
@@ -113,7 +95,7 @@ class OracleApi
             $stack->push($oauth);
 
             $this->client = new Client([
-                'base_uri' => 'https://' . $this->oceDomain,
+                'base_uri' => $this->url,
                 'handler' => $stack,
                 'auth' => 'oauth',
             ]);
